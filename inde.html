@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obchod s hudobnými nástrojmi</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="top-bar">
+            <div class="menu-icon">☰</div>
+            <div class="logo">🏠</div>
+            <input type="text" placeholder="Hľadať...">
+            <button class="search-btn">🔍</button>
+            <div class="login">Prihlásiť sa / používateľské meno</div>
+            <button class="cart-btn">🛒 Celkom $$$</button>
+        </div>
+    </header>
+
+    <main>
+        <aside class="sidebar">
+    <h2>Kategórie</h2>
+    <ul class="category-list">
+        <li><strong>Značky</strong>
+            <ul>
+                <li>Yamaha</li>
+                <li>Casio</li>
+            </ul>
+        </li>
+        <li><strong>Gitary</strong>
+            <ul>
+                <li>Akustické</li>
+                <li>Klasické</li>
+                <li>Basové gitary</li>
+            </ul>
+        </li>
+        <li><strong>Bicie</strong>
+            <ul>
+                <li>Akustické bicie</li>
+                <li>Činely</li>
+                <li>Paličky</li>
+            </ul>
+        </li>
+        <li><strong>Sláčikové</strong>
+            <ul>
+                <li>Violy</li>
+                <li>Púzdra na sláčiky</li>
+                <li>Metronómy</li>
+            </ul>
+        </li>
+    </ul>
+</aside>
+
+        <section class="products">
+            <div class="filter-bar">
+                <label>Filtrovať podľa:</label>
+                <select>
+                    <option>Rastúca cena</option>
+                    <option>Klesajúca cena</option>
+                    <option>Hodnotenie</option>
+                </select>
+                <label>Cena:</label>
+                <div class="price-range">
+                    <span>od</span>
+                    <input type="range">
+                    <span>do</span>
+                    <input type="range">
+                </div>
+                <button>OK</button>
+            </div>
+
+            <h2>Zoznam produktov</h2>
+            <div class="product-list">
+                <div class="product">
+                    <img src="image.png" alt="Produkt">
+                    <h3>Názov produktu</h3>
+                    <p>⭐⭐☆☆☆</p>
+                    <p>Cena</p>
+                    <button>🛒</button>
+                </div>
+                <div class="product">
+                    <img src="image.png" alt="Produkt">
+                    <h3>Názov produktu</h3>
+                    <p>⭐⭐☆☆☆</p>
+                    <p>Cena</p>
+                    <button>🛒</button>
+                </div>
+                <div class="product">
+                    <img src="image.png" alt="Produkt">
+                    <h3>Názov produktu</h3>
+                    <p>⭐⭐☆☆☆</p>
+                    <p>Cena</p>
+                    <button>🛒</button>
+                </div>
+                <div class="product">
+                    <img src="image.png" alt="Produkt">
+                    <h3>Názov produktu</h3>
+                    <p>⭐⭐☆☆☆</p>
+                    <p>Cena</p>
+                    <button>🛒</button>
+                </div>
+                <div class="product">
+                    <img src="image.png" alt="Produkt">
+                    <h3>Názov produktu</h3>
+                    <p>⭐⭐☆☆☆</p>
+                    <p>Cena</p>
+                    <button>🛒</button>
+                </div>
+                <div class="product">
+                    <img src="image.png" alt="Produkt">
+                    <h3>Názov produktu</h3>
+                    <p>⭐⭐☆☆☆</p>
+                    <p>Cena</p>
+                    <button>🛒</button>
+                </div>
+            </div>
+
+            <div class="pagination">
+                <a href="#">&lt;</a>
+                <a href="#">1</a>
+                <a href="#" class="active">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <span>...</span>
+                <a href="#">Posledná</a>
+                <a href="#">&gt;</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Sme na sociálnych sieťach | O nás</p>
+    </footer>
+</body>
+</html>
+
