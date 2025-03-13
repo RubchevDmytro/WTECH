@@ -93,6 +93,24 @@ body {
     text-align: center;
     background: white;
 }
+.pagination a {
+    padding: 8px 12px;
+    text-decoration: none;
+    color: black;
+    border: 1px solid #ddd;
+    margin: 0 5px;
+    border-radius: 4px;
+}
+
+.pagination a.active {
+    background-color: green;
+    color: white;
+    border: 1px solid green;
+}
+
+.pagination a:hover {
+    background-color: #ddd;
+}
 
 .product img {
     width: 100px;

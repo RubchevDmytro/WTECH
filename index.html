@@ -13,8 +13,8 @@
             <div class="logo">🏠</div>
             <input type="text" placeholder="Hľadať...">
             <button class="search-btn">🔍</button>
-            <div class="login">Prihlásiť sa / používateľské meno</div>
-            <button class="cart-btn">🛒 Celkom $$$</button>
+            <a href="login.html"class ="login">Prihlásiť sa / používateľské meno</a>
+            <a href="cart.html" class="cart-btn">🛒</a>
         </div>
     </header>
 
@@ -115,17 +115,17 @@
                     <button>🛒</button>
                 </div>
             </div>
+<div class="pagination" id="pagination">
+    <a href="#" data-page="prev">&lt;</a>
+    <a href="#" data-page="1">1</a>
+    <a href="#" data-page="2" class="active">2</a>
+    <a href="#" data-page="3">3</a>
+    <a href="#" data-page="4">4</a>
+    <span>...</span>
+    <a href="#" data-page="last">Posledná</a>
+    <a href="#" data-page="next">&gt;</a>
+</div>
 
-            <div class="pagination">
-                <a href="#">&lt;</a>
-                <a href="#">1</a>
-                <a href="#" class="active">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <span>...</span>
-                <a href="#">Posledná</a>
-                <a href="#">&gt;</a>
-            </div>
         </section>
     </main>
 
@@ -133,5 +133,23 @@
         <p>Sme na sociálnych sieťach | O nás</p>
     </footer>
 </body>
+<script>document.addEventListener("DOMContentLoaded", function () {
+    const pagination = document.getElementById("pagination");
+    const productList = document.querySelector(".product-list");
+
+    pagination.addEventListener("click", function (e) {
+        if (e.target.tagName === "A" && e.target.dataset.page) {
+            e.preventDefault();
+            const page = e.target.dataset.page;
+            loadProducts(page);
+        }
+    });
+
+    function loadProducts(page) {
+        console.log("Загружаем страницу:", page);
+        // Здесь можно сделать AJAX-запрос или заменить содержимое `.product-list`
+    }
+});
+<scipt>
 </html>
 
