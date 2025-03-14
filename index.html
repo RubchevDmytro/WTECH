@@ -1,173 +1,155 @@
 <!DOCTYPE html>
-<html lang="sk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Obchod s hudobnými nástrojmi</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <div class="top-bar">
-            <div class="menu-icon">☰</div>
-            <div class="logo">🏠</div>
-            <input type="text" placeholder="Hľadať...">
-            <button class="search-btn">🔍</button>
-            <a href="login.html"class ="login">Prihlásiť sa / používateľské meno</a>
-            <a href="cart.html" class="cart-btn">🛒</a>
-        </div>
-    </header>
-
-    <main>
-        <aside class="sidebar">
-    <h2>Kategórie</h2>
-    <ul class="category-list">
-        <li><strong>Značky</strong>
-            <ul>
-                <li>Yamaha</li>
-                <li>Casio</li>
-            </ul>
-        </li>
-        <li><strong>Gitary</strong>
-            <ul>
-                <li>Akustické</li>
-                <li>Klasické</li>
-                <li>Basové gitary</li>
-            </ul>
-        </li>
-        <li><strong>Bicie</strong>
-            <ul>
-                <li>Akustické bicie</li>
-                <li>Činely</li>
-                <li>Paličky</li>
-            </ul>
-        </li>
-        <li><strong>Sláčikové</strong>
-            <ul>
-                <li>Violy</li>
-                <li>Púzdra na sláčiky</li>
-                <li>Metronómy</li>
-            </ul>
-        </li>
-    </ul>
-</aside>
-
-        <section class="products">
-            <div class="filter-bar">
-                <label>Filtrovať podľa:</label>
-                <select>
-                    <option>Rastúca cena</option>
-                    <option>Klesajúca cena</option>
-                    <option>Hodnotenie</option>
-                </select>
-                <label>Cena:</label>
-                <div class="price-range">
-                    <span>od</span>
-                    <input type="range">
-                    <span>do</span>
-                    <input type="range">
-                </div>
-                <button>OK</button>
-            </div>
-
-            <h2>Zoznam produktov</h2>
-            <div class="product-list">
-<div class="product">
+ <html lang="sk">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Obchod s hudobnými nástrojmi</title>
+     <link rel="stylesheet" href="styles.css">
+ </head>
+ <body>
+     <header>
+         <div class="top-bar">
+             <div class="menu-icon">☰</div>
+             <a href -"index.html" class="logo">🏠</a>
+             <input type="text" placeholder="Hľadať...">
+             <button class="search-btn">🔍</button>
+             <a href="login.html"class ="login">Prihlásiť sa / používateľské meno</a>
+             <a href="cart.html" class="cart-btn">🛒</a>
+         </div>
+     </header>
+ 
+     <main>
+         <aside class="sidebar">
+     <h2>Kategórie</h2>
+     <ul class="category-list">
+         <li><strong>Značky</strong>
+             <ul>
+                 <li>Yamaha</li>
+                 <li>Casio</li>
+             </ul>
+         </li>
+         <li><strong>Gitary</strong>
+             <ul>
+                 <li>Akustické</li>
+                 <li>Klasické</li>
+                 <li>Basové gitary</li>
+             </ul>
+         </li>
+         <li><strong>Bicie</strong>
+             <ul>
+                 <li>Akustické bicie</li>
+                 <li>Činely</li>
+                 <li>Paličky</li>
+             </ul>
+         </li>
+         <li><strong>Sláčikové</strong>
+             <ul>
+                 <li>Violy</li>
+                 <li>Púzdra na sláčiky</li>
+                 <li>Metronómy</li>
+             </ul>
+         </li>
+     </ul>
+ </aside>
+ 
+         <section class="products">
+             <div class="filter-bar">
+                 <label>Filtrovať podľa:</label>
+                 <select>
+                     <option>Rastúca cena</option>
+                     <option>Klesajúca cena</option>
+                     <option>Hodnotenie</option>
+                 </select>
+                 <label>Cena:</label>
+                 <div class="price-range">
+                     <span>od</span>
+                     <input type="range">
+                     <span>do</span>
+                     <input type="range">
+                 </div>
+                 <button>OK</button>
+             </div>
+             <h2>Zoznam produktov</h2>
+             <div class="product-list">
+                 <div class="product">
     <a href="product.html">
         <img src="image.png" alt="Product">
     </a>
     <h3>Product Name</h3>
     <p>⭐⭐☆☆☆</p>
     <p>Price</p>
-    <div class="gallery">
-        <img src="image.png" alt="Thumbnail 1">
-        <img src="image.png" alt="Thumbnail 2">
-        <img src="image.png" alt="Thumbnail 3">
-    </div>
     <input type="number" value="1" min="1" class="quantity">
     <button>🛒 Add to cart</button>
-</div>
-<div class="product">
+</div><div class="product">
     <a href="product.html">
         <img src="image.png" alt="Product">
     </a>
     <h3>Product Name</h3>
     <p>⭐⭐☆☆☆</p>
     <p>Price</p>
-    <div class="gallery">
-        <img src="image.png" alt="Thumbnail 1">
-        <img src="image.png" alt="Thumbnail 2">
-        <img src="image.png" alt="Thumbnail 3">
-    </div>
     <input type="number" value="1" min="1" class="quantity">
     <button>🛒 Add to cart</button>
-</div>
-<div class="product">
+</div><div class="product">
     <a href="product.html">
         <img src="image.png" alt="Product">
     </a>
     <h3>Product Name</h3>
     <p>⭐⭐☆☆☆</p>
     <p>Price</p>
-    <div class="gallery">
-        <img src="image.png" alt="Thumbnail 1">
-        <img src="image.png" alt="Thumbnail 2">
-        <img src="image.png" alt="Thumbnail 3">
-    </div>
     <input type="number" value="1" min="1" class="quantity">
     <button>🛒 Add to cart</button>
-</div>
-<div class="product">
+</div><div class="product">
     <a href="product.html">
         <img src="image.png" alt="Product">
     </a>
     <h3>Product Name</h3>
     <p>⭐⭐☆☆☆</p>
     <p>Price</p>
-    <div class="gallery">
-        <img src="image.png" alt="Thumbnail 1">
-        <img src="image.png" alt="Thumbnail 2">
-        <img src="image.png" alt="Thumbnail 3">
-    </div>
+    <input type="number" value="1" min="1" class="quantity">
+    <button>🛒 Add to cart</button>
+</div><div class="product">
+    <a href="product.html">
+        <img src="image.png" alt="Product">
+    </a>
+    <h3>Product Name</h3>
+    <p>⭐⭐☆☆☆</p>
+    <p>Price</p>
     <input type="number" value="1" min="1" class="quantity">
     <button>🛒 Add to cart</button>
 </div>
-
-<div class="pagination" id="pagination">
-    <a href="#" data-page="prev">&lt;</a>
-    <a href="#" data-page="1">1</a>
-    <a href="#" data-page="2" class="active">2</a>
-    <a href="#" data-page="3">3</a>
-    <a href="#" data-page="4">4</a>
-    <span>...</span>
-    <a href="#" data-page="last">Posledná</a>
-    <a href="#" data-page="next">&gt;</a>
-</div>
-
-        </section>
-    </main>
-
-    <footer>
-        <p>Sme na sociálnych sieťach | O nás</p>
-    </footer>
-</body>
-<script>document.addEventListener("DOMContentLoaded", function () {
-    const pagination = document.getElementById("pagination");
-    const productList = document.querySelector(".product-list");
-
-    pagination.addEventListener("click", function (e) {
-        if (e.target.tagName === "A" && e.target.dataset.page) {
-            e.preventDefault();
-            const page = e.target.dataset.page;
-            loadProducts(page);
-        }
-    });
-
-    function loadProducts(page) {
-        console.log("Загружаем страницу:", page);
-        // Здесь можно сделать AJAX-запрос или заменить содержимое `.product-list`
-    }
-});
-<scipt>
-</html>
-
+             </div>
+ <div class="pagination" id="pagination">
+     <a href="#" data-page="prev">&lt;</a>
+     <a href="#" data-page="1">1</a>
+     <a href="#" data-page="2" class="active">2</a>
+     <a href="#" data-page="3">3</a>
+     <a href="#" data-page="4">4</a>
+     <span>...</span>
+     <a href="#" data-page="last">ná</a>
+     <a href="#" data-page="next">&gt;</a>
+ </div>
+ 
+ 
+     <footer>
+         <p>Sme na sociálnych sieťach | O nás</p>
+     </footer>
+ </body>
+ <script>document.addEventListener("DOMContentLoaded", function () {
+     const pagination = document.getElementById("pagination");
+     const productList = document.querySelector(".product-list");
+ 
+     pagination.addEventListener("click", function (e) {
+         if (e.target.tagName === "A" && e.target.dataset.page) {
+             e.preventDefault();
+             const page = e.target.dataset.page;
+             loadProducts(page);
+         }
+     });
+ 
+     function loadProducts(page) {
+         console.log("Загружаем страницу:", page);
+         // Здесь можно сделать AJAX-запрос или заменить содержимое `.product-list`
+     }
+ });
+ <scipt>
+ </html>

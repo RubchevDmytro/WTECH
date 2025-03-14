@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <link rel="stylesheet" href="style_confirmation.css">
+</head>
+<body>
+         <header>
+         <div class="top-bar">
+             <div class="menu-icon">☰</div>
+             <div class="logo">🏠</div>
+             <input type="text" placeholder="Hľadať...">
+             <button class="search-btn">🔍</button>
+             <a href="login.html"class ="login">Prihlásiť sa / používateľské meno</a>
+             <a href="cart.html" class="cart-btn">🛒</a>
+         </div>
+     </header>
+
+
+
+<main class="container">
+    <!-- Левая часть - Данные для заказа -->
+    <section class="order-details">
+        <h2>Contact Information</h2>
+        <input type="email" placeholder="E-mail">
+        <input type="text" placeholder="Phone number">
+        
+        <h2>Delivery Address</h2>
+        <input type="text" placeholder="First Name">
+        <input type="text" placeholder="Last Name">
+        <input type="text" placeholder="Address">
+        <input type="text" placeholder="City">
+        <input type="text" placeholder="Postcode">
+        <input type="text" placeholder="Country">
+
+        <h2>Payment</h2>
+        <input type="text" placeholder="Card Number">
+        <input type="text" placeholder="Name on Card">
+        <input type="text" placeholder="MM/YY">
+        <input type="text" placeholder="CVV">
+        <button class="pay">Pay</button>
+    </section>
+
+    <!-- Правая часть - Корзина -->
+    <section class="cart">
+        <h2>Your Cart</h2>
+        <div class="cart-items">
+            <div class="cart-item">
+                <img src="image.png" alt="Product">
+                <div class="item-info">
+                    <h3>Product Name</h3>
+                    <p class="price" data-price="20">$20</p>
+                    <div class="quantity">
+                        <button class="decrease">−</button>
+                        <span class="count">1</span>
+                        <button class="increase">+</button>
+                    </div>
+                </div>
+                <button class="remove">✖</button>
+            </div>
+
+            <div class="cart-item">
+                <img src="image.png" alt="Product">
+                <div class="item-info">
+                    <h3>Product Name</h3>
+                    <p class="price" data-price="15">$15</p>
+                    <div class="quantity">
+                        <button class="decrease">−</button>
+                        <span class="count">1</span>
+                        <button class="increase">+</button>
+                    </div>
+                </div>
+                <button class="remove">✖</button>
+            </div>
+        </div>
+
+        <h3>Total: <span id="total-price">$35</span></h3>
+    </section>
+</main>
+
+<script src="script_confirmation.js"></script>
+</body>
+</html>
+
