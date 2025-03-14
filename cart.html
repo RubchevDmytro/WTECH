@@ -120,16 +120,16 @@
 </head>
 <body>
 
-    <header>
-        <div class="top-bar">
-            <div class="menu-icon">☰</div>
-            <a href="index.html" class="logo">🏠</a>
-            <input type="text" placeholder="Hľadať...">
-            <button class="search-btn">🔍</button>
-            <div class="login">Prihlásiť sa / používateľské meno</div>
-            <a href="cart.html" class="cart-btn">🛒</a>
-        </div>
-    </header>
+     <header>
+         <div class="top-bar">
+             <div class="menu-icon">☰</div>
+             <a href ="index.html" class="logo">🏠</a>
+             <input type="text" placeholder="Hľadať...">
+             <button class="search-btn">🔍</button>
+             <a href="login.html"class ="login">Prihlásiť sa / používateľské meno</a>
+             <a href="cart.html" class="cart-btn">🛒</a>
+         </div>
+     </header>
 
     <div class="container">
         <div id="cart">
@@ -181,11 +181,16 @@
         <div class="total">Total: $<span id="total-price">55</span></div>
         <div class="buttons">
             <button>Continue</button>
-            <button>Checkout</button>
+            <button id="confirm-order">Confirm Order</button>
+
         </div>
     </div>
 
     <script>
+        document.getElementById("confirm-order").addEventListener("click", function() {
+    window.location.href = "confirmation.html";
+});
+
         function updateTotal() {
             let total = 0;
             document.querySelectorAll('.product').forEach(product => {
