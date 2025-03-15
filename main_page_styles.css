@@ -7,20 +7,41 @@ body {
 }
 
 /* Хэдер */
-.top-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #a52a2a;
-    padding: 10px;
-    color: white;
-    position: fixed;
-    width:100%;
-    top:0;
-    left:0;
-    z-index: 1000;
-}
+        header {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #a52a2a;
+            padding: 0 20px;
+        }
 
+        .top-bar {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .menu-icon, .logo, .login, .cart-btn {
+            font-size: 20px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 5px;
+            margin: 0 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .search-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
 /* Основная часть */
 main {
     display: flex;
@@ -57,6 +78,24 @@ main {
 }
 
 /* Делаем фильтры аккуратными */
+.filter-bar{
+    position: fixed;
+    top: 40px;
+    left: 250px;
+    right: 0;
+    background: #800000;
+    color: white;
+    padding: 10px;
+    margin-top: 10px;
+    display: flex
+;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 999;
+    overflow-x: auto;
+    white-space: nowrap;
+    height: auto;
+}
 .filter-bar label,
 .filter-bar select,
 .filter-bar input,
