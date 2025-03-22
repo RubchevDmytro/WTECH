@@ -3,12 +3,12 @@ body {
     font-family: Arial, sans-serif; background-color: #fff;
     margin: 0;
     padding: 0;
-    display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
-        header {V
+/* Хэдер */
+        header {
             height: 60px;
             display: flex;
             align-items: center;
@@ -43,8 +43,8 @@ body {
             font-size: 20px;
             cursor: pointer;
         }
-/* Основная часть */
-main {
+/* Основная часть *
+ * main {
     display: flex;
     margin-top:60px;
 }
@@ -133,3 +133,4 @@ input, textarea {
     background: #8a7a7a;
 }
 
+/

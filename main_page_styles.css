@@ -7,7 +7,7 @@ body {
 }
 
 /* Хэдер */
-        header {V
+        header {
             height: 60px;
             display: flex;
             align-items: center;
