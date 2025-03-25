@@ -1,0 +1,136 @@
+/* Общие стили */ 
+body {
+    font-family: Arial, sans-serif; background-color: #fff;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+/* Хэдер */
+        header {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #a52a2a;
+            padding: 0 20px;
+        }
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .menu-icon, .logo, .login, .cart-btn {
+            font-size: 20px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 5px;
+            margin: 0 0px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .search-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+/* Основная часть *
+ * main {
+    display: flex;
+    margin-top:60px;
+}
+
+
+/* Контейнер формы и загрузки фото */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    background: #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    width: 60%;
+    margin: 0 auto;
+}
+
+/* Контейнер для изображений */
+.upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Блок загрузки изображений */
+#upload-boxes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.upload-box {
+    width: 150px;
+    height: 150px;
+    background: gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border-radius: 5px;
+}
+
+/* Кнопка добавления фото */
+#add-image-btn {
+    width: 30px;
+    height: 30px;
+    background: #a19292;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Форма */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #f3e5e5;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+/* Поля ввода */
+input, textarea {
+    width: 200px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* Кнопка отправки */
+.submit-btn {
+    background: #a19292;
+    border: none;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.submit-btn:hover {
+    background: #8a7a7a;
+}
+
+/
