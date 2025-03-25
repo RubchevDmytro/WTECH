@@ -11,8 +11,6 @@
             padding: 0;
             background-color: #f8f8f8;
         }
-
-        /* Хэдер */
         header {
             height: 60px;
             display: flex;
@@ -21,35 +19,28 @@
             background: #a52a2a;
             padding: 0 20px;
         }
-
-        .top-bar {
+        nav {
             display: flex;
             align-items: center;
             width: 100%;
         }
-
         .menu-icon, .logo, .login, .cart-btn {
             font-size: 20px;
             margin: 0 10px;
             cursor: pointer;
         }
-
-        input[type="text"] {
+        input[type="search"] {
             flex: 1;
             padding: 5px;
             margin: 0 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
         }
+        .product_image{
+            width:80px;
+            height:80px;
 
-        .search-btn {
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
         }
-
-        /* Контейнер корзины */
         .container {
             width: 80%;
             margin: 20px auto;
@@ -57,7 +48,6 @@
             padding: 20px;
             border-radius: 10px;
         }
-
         .product {
             display: flex;
             align-items: center;
@@ -67,75 +57,32 @@
             border-radius: 8px;
             margin-bottom: 10px;
         }
-
-        .product img {
-            width: 50px;
-        }
-
-        .name {
-            font-weight: bold;
-            flex: 1;
-            margin-left: 15px;
-        }
-
-        .controls {
-            display: flex;
-            align-items: center;
-        }
-
-        .controls button {
-            padding: 5px 10px;
-            font-size: 16px;
-            margin: 0 5px;
-            cursor: pointer;
-        }
-
-        .delete {
-            color: red;
-            cursor: pointer;
-            font-size: 18px;
-            margin-left: 10px;
-        }
-
         .total {
             font-size: 18px;
             margin-top: 20px;
         }
-
         .buttons {
             display: flex;
             justify-content: space-between;
             margin-top: 20px;
         }
-
-        .buttons button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background: #444;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
     </style>
 </head>
 <body>
+    <header>
+        <nav>
+            <button class="menu-icon">☰</button>
+            <a href="main_page.html" class="logo">🏠</a>
+            <input type="search" placeholder="Hľadať...">
+            <a href="login.html" class="login">Prihlásiť sa</a>
+            <a href="cart.html" class="cart-btn">🛒</a>
+        </nav>
+    </header>
 
-     <header>
-         <div class="top-bar">
-             <div class="menu-icon">☰</div>
-             <a href ="main_page.html"class="logo">🏠</a>
-             <input type="text" placeholder="Hľadať...">
-             <button class="search-btn">🔍</button>
-             <a href="login.html"class ="login">Prihlásiť sa / používateľské meno</a>
-             <a href="cart.html" class="cart-btn">🛒</a>
-         </div>
-     </header>
-
-    <div class="container">
-        <div id="cart">
-                        <div class="product" data-price="120">
-                <img src="image.png" alt="Product">
+    <main class="container">
+        <section id="cart">
+            <article class="product" data-price="120">
+                <img class="product_image"src="image.png" alt="Product">
                 <span class="name">Product</span>
                 <div class="controls">
                     <button class="minus">-</button>
@@ -143,54 +90,20 @@
                     <button class="plus">+</button>
                 </div>
                 <span class="price">$120</span>
-                <span class="delete">🗑</span>
-            </div>
-            <div class="product" data-price="50"> <img src="image.png" alt="Product">
-                <span class="name">Product</span>
-                <div class="controls">
-                    <button class="minus">-</button>
-                    <span class="count">1</span>
-                    <button class="plus">+</button>
-                </div>
-                <span class="price">$50</span>
-                <span class="delete">🗑</span>
-            </div>
-
-            <div class="product" data-price="20">
-                <img src="image.png" alt="Product">
-                <span class="name">Product </span>
-                <div class="controls">
-                    <button class="minus">-</button>
-                    <span class="count">1</span>
-                    <button class="plus">+</button>
-                </div>
-                <span class="price">$20</span>
-                <span class="delete">🗑</span>
-            </div>
-            <div class="product" data-price="35">
-                <img src="image.png" alt="Product">
-                <span class="name">Product</span>
-                <div class="controls">
-                    <button class="minus">-</button>
-                    <span class="count">1</span>
-                    <button class="plus">+</button>
-                </div>
-                <span class="price">$35</span>
-                <span class="delete">🗑</span>
-            </div>
-        </div>
-        <div class="total">Total: $<span id="total-price">55</span></div>
+                <button class="delete">🗑</button>
+            </article>
+        </section>
+        <div class="total">Total: $<span id="total-price">120</span></div>
         <div class="buttons">
             <button>Continue</button>
             <button id="confirm-order">Confirm Order</button>
-
         </div>
-    </div>
+    </main>
 
     <script>
         document.getElementById("confirm-order").addEventListener("click", function() {
-    window.location.href = "confirmation.html";
-});
+            window.location.href = "confirmation.html";
+        });
 
         function updateTotal() {
             let total = 0;
@@ -228,7 +141,7 @@
             });
         });
     </script>
-
 </body>
 </html>
+
 
