@@ -4,59 +4,7 @@
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Obchod s hudobnými nástrojmi</title>
-         <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .slider-container {
-            width: 300px;
-            margin: 0px auto;
-            text-align: center;
-        }
-        .inputs {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        input[type="number"] {
-            width: 60px;
-            padding: 5px;
-            text-align: center;
-        }
-        .slider-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .slider {
-            position: relative;
-            width: 100%;
-            height: 5px;
-            background: #ccc;
-            border-radius: 5px;
-        }
-        .range-track {
-            position: absolute;
-            height: 5px;
-            background: #007bff;
-            top: 0;
-            border-radius: 5px;
-        }
-        .thumb {
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            background: #007bff;
-            border-radius: 50%;
-            top: -5px;
-            transform: translateX(-50%);
-            cursor: pointer;
-        }
-    </style>
-
-     <link rel="stylesheet" href="main_page_styles.css">
+     <link rel="stylesheet" href="main_page.css">
  </head>
  <body>
      <header>
@@ -112,20 +60,18 @@
                      <option>Hodnotenie</option>
                  </select>
                  <label>Cena:</label>
-                 <div class="slider-container">
-    <div class="inputs">
-        <input type="number" id="min-price" value="2067" min="0" max="10000">
-        <input type="number" id="max-price" value="8233" min="0" max="10000">
-    </div>
-    <div class="slider-wrapper">
-        <div class="slider" id="slider">
-            <div class="range-track"></div>
-            <div class="thumb" id="min-thumb"></div>
-            <div class="thumb" id="max-thumb"></div>
-        </div>
-    </div>
-</div>
-<button>OK</button>
+                 <div class="price-range">
+
+                     <span >od</span>
+                     <span id = "minValue">0</span>
+                     <input id = "minRange" type="range" min="0" max="1000" value="0">
+
+                     <input id="maxRange" type="range" min="0" max="1000" value="1000" >
+                     <span>do</span>
+                     <span id = "maxValue">1000</span>
+
+                 </div>
+                 <button>OK</button>
              </div>
              <h2 style ="
     margin-top: 60px;
@@ -265,67 +211,30 @@
      }
     }
  )
-         const minInput = document.getElementById("min-price");
-    const maxInput = document.getElementById("max-price");
-    const slider = document.getElementById("slider");
-    const minThumb = document.getElementById("min-thumb");
-    const maxThumb = document.getElementById("max-thumb");
-    const rangeTrack = document.querySelector(".range-track");
+     //Price Range Slider
+     const minRange = document.getElementById('minRange');
+     const maxRange = document.getElementById('maxRange');
+     const minValue = document.getElementById('minValue');
+     const maxValue = document.getElementById('maxValue');
 
-    let minValue = parseInt(minInput.value);
-    let maxValue = parseInt(maxInput.value);
-    const minLimit = 0;
-    const maxLimit = 10000;
-
-    function updateUI() {
-        let minPercent = ((minValue - minLimit) / (maxLimit - minLimit)) * 100;
-        let maxPercent = ((maxValue - minLimit) / (maxLimit - minLimit)) * 100;
-
-        minThumb.style.left = minPercent + "%";
-        maxThumb.style.left = maxPercent + "%";
-        rangeTrack.style.left = minPercent + "%";
-        rangeTrack.style.width = (maxPercent - minPercent) + "%";
-    }
-
-    function moveThumb(event, isMin) {
-        const rect = slider.getBoundingClientRect();
-        const offsetX = event.clientX - rect.left;
-        const percent = Math.max(0, Math.min(1, offsetX / rect.width));
-        const value = Math.round(minLimit + percent * (maxLimit - minLimit));
-
-        if (isMin) {
-            minValue = Math.min(value, maxValue);
-            minInput.value = minValue;
-        } else {
-            maxValue = Math.max(value, minValue);
-            maxInput.value = maxValue;
-        }
-
-        updateUI();
-    }
-
-    minThumb.addEventListener("mousedown", () => {
-        document.onmousemove = (event) => moveThumb(event, true);
-        document.onmouseup = () => (document.onmousemove = null);
-    });
-
-    maxThumb.addEventListener("mousedown", () => {
-        document.onmousemove = (event) => moveThumb(event, false);
-        document.onmouseup = () => (document.onmousemove = null);
-    });
-
-    minInput.addEventListener("input", () => {
-        minValue = Math.max(minLimit, Math.min(parseInt(minInput.value), maxValue));
-        updateUI();
-    });
-
-    maxInput.addEventListener("input", () => {
-        maxValue = Math.min(maxLimit, Math.max(parseInt(maxInput.value), minValue));
-        updateUI();
-    });
-
-    updateUI();
-
+     function updateMin() {
+         if (parseInt(minRange.value) > parseInt(maxRange.value)) {
+             minRange.value = maxRange.value;
+         }
+         minValue.textContent = minRange.value;
+         maxValue.textContent = maxRange.value;
+     }
+     function updateMax() {
+         if (parseInt(minRange.value) > parseInt(maxRange.value)) {
+             maxRange.value = minRange.value;
+         }
+         minValue.textContent = minRange.value;
+         maxValue.textContent = maxRange.value;
+     }
+     minRange.addEventListener('input', updateMin);
+     maxRange.addEventListener('input', updateMax);
+     updateMin();
+     updateMax();
  </script>
      </body>
  </html>
