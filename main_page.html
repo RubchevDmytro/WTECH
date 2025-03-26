@@ -212,8 +212,15 @@
 
             function loadProducts(page) {
                 console.log("Загружаем страницу:", page);
-// Здесь можно сделать AJAX-запрос или заменить содержимое `.product-list`
             }
+
+
+            const menuIcon = document.querySelector(".menu-icon");
+            const sidebar = document.querySelector(".sidebar");
+
+            menuIcon.addEventListener("click", function () {
+                sidebar.classList.toggle("active"); // Show/Hide sidebar
+            });
         }
     )
     const minInput = document.getElementById("min-price");
@@ -276,6 +283,7 @@
     });
 
     updateUI();
+
 
 </script>
 </body>
