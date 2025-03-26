@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+ <html lang="sk">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Obchod s hudobnými nástrojmi</title>
+     <link rel="stylesheet" href="main_page_styles.css">
+ </head>
+ <body>
+     <header>
+         <div class="top-bar">
+             <div class="menu-icon">☰</div>
+             <a href ="main_page.html"class="logo">🏠</a>
+             <input type="text" placeholder="Hľadať...">
+             <button class="search-btn">🔍</button>
+             <a href="login.html"class ="login">Prihlásiť sa / používateľské meno</a>
+             <a href="cart.html" class="cart-btn">🛒</a>
+         </div>
+     </header>
+
+     <main>
+         <aside class="sidebar">
+     <h2>Kategórie</h2>
+     <ul class="category-list">
+         <li><strong>Značky</strong>
+             <ul>
+                 <li>Yamaha</li>
+                 <li>Casio</li>
+             </ul>
+         </li>
+         <li><strong>Gitary</strong>
+             <ul>
+                 <li>Akustické</li>
+                 <li>Klasické</li>
+                 <li>Basové gitary</li>
+             </ul>
+         </li>
+         <li><strong>Bicie</strong>
+             <ul>
+                 <li>Akustické bicie</li>
+                 <li>Činely</li>
+                 <li>Paličky</li>
+             </ul>
+         </li>
+         <li><strong>Sláčikové</strong>
+             <ul>
+                 <li>Violy</li>
+                 <li>Púzdra na sláčiky</li>
+                 <li>Metronómy</li>
+             </ul>
+         </li>
+     </ul>
+ </aside>
+
+         <section class="products">
+             <div class="filter-bar">
+                 <label>Filtrovať podľa:</label>
+                 <select>
+                     <option>Rastúca cena</option>
+                     <option>Klesajúca cena</option>
+                     <option>Hodnotenie</option>
+                 </select>
+                 <label>Cena:</label>
+                 <div class="price-range">
+
+                     <span >od</span>
+                     <span id = "minValue">0</span>
+                     <input id = "minRange" type="range" min="0" max="1000" value="0">
+
+                     <input id="maxRange" type="range" min="0" max="1000" value="1000" >
+                     <span>do</span>
+                     <span id = "maxValue">1000</span>
+
+                 </div>
+                 <button>OK</button>
+             </div>
+             <h2>Zoznam produktov</h2>
+             <div class="product-list">
+                 <div class="product">
+    <a href="product.html">
+        <img src="image.png" alt="Product">
+    </a>
+    <h3>Product Name</h3>
+    <p>⭐⭐☆☆☆</p>
+    <p>Price</p>
+    <input type="number" value="1" min="1" class="quantity">
+    <button>🛒 Add to cart</button>
+</div><div class="product">
+    <a href="product.html">
+        <img src="image.png" alt="Product">
+    </a>
+    <h3>Product Name</h3>
+    <p>⭐⭐☆☆☆</p>
+    <p>Price</p>
+    <input type="number" value="1" min="1" class="quantity">
+    <button>🛒 Add to cart</button>
+</div><div class="product">
+    <a href="product.html">
+        <img src="image.png" alt="Product">
+    </a>
+    <h3>Product Name</h3>
+    <p>⭐⭐☆☆☆</p>
+    <p>Price</p>
+    <input type="number" value="1" min="1" class="quantity">
+    <button>🛒 Add to cart</button>
+</div>
+<div class="product">
+    <a href="product.html">
+        <img src="image.png" alt="Product">
+    </a>
+    <h3>Product Name</h3>
+    <p>⭐⭐☆☆☆</p>
+    <p>Price</p>
+    <input type="number" value="1" min="1" class="quantity">
+    <button>🛒 Add to cart</button>
+</div>
+<div class="product">
+    <a href="product.html">
+        <img src="image.png" alt="Product">
+    </a>
+    <h3>Product Name</h3>
+    <p>⭐⭐☆☆☆</p>
+    <p>Price</p>
+    <input type="number" value="1" min="1" class="quantity">
+    <button>🛒 Add to cart</button>
+</div>
+<div class="product">
+    <a href="product.html">
+        <img src="image.png" alt="Product">
+    </a>
+    <h3>Product Name</h3>
+    <p>⭐⭐☆☆☆</p>
+    <p>Price</p>
+    <input type="number" value="1" min="1" class="quantity">
+    <button>🛒 Add to cart</button>
+</div>
+<div class="product">
+    <a href="product.html">
+        <img src="image.png" alt="Product">
+    </a>
+    <h3>Product Name</h3>
+    <p>⭐⭐☆☆☆</p>
+    <p>Price</p>
+    <input type="number" value="1" min="1" class="quantity">
+    <button>🛒 Add to cart</button>
+</div>
+<div class="product">
+    <a href="product.html">
+        <img src="image.png" alt="Product">
+    </a>
+    <h3>Product Name</h3>
+    <p>⭐⭐☆☆☆</p>
+    <p>Price</p>
+    <input type="number" value="1" min="1" class="quantity">
+    <button>🛒 Add to cart</button>
+</div>
+<div class="product">
+    <a href="product.html">
+        <img src="image.png" alt="Product">
+    </a>
+    <h3>Product Name</h3>
+    <p>⭐⭐☆☆☆</p>
+    <p>Price</p>
+    <input type="number" value="1" min="1" class="quantity">
+    <button>🛒 Add to cart</button>
+</div>
+
+<div class="product">
+    <a href="product.html">
+        <img src="image.png" alt="Product">
+    </a>
+    <h3>Product Name</h3>
+    <p>⭐⭐☆☆☆</p>
+    <p>Price</p>
+    <input type="number" value="1" min="1" class="quantity">
+    <button>🛒 Add to cart</button>
+</div>
+             </div>
+ <div class="pagination" id="pagination">
+     <a href="#" data-page="prev">&lt;</a>
+     <a href="#" data-page="1">1</a>
+     <a href="#" data-page="2" class="active">2</a>
+     <a href="#" data-page="3">3</a>
+     <a href="#" data-page="4">4</a>
+     <span>...</span>
+     <a href="#" data-page="last">ná</a>
+     <a href="#" data-page="next">&gt;</a>
+ </div>
+         </section>
+     </main>
+     <footer>
+         <p>Sme na sociálnych sieťach | O nás</p>
+     </footer>
+ <script>
+     document.addEventListener("DOMContentLoaded", function () {
+     const pagination = document.getElementById("pagination");
+     const productList = document.querySelector(".product-list");
+
+     pagination.addEventListener("click", function (e) {
+         if (e.target.tagName === "A" && e.target.dataset.page) {
+             e.preventDefault();
+             const page = e.target.dataset.page;
+             loadProducts(page);
+         }
+     });
+
+     function loadProducts(page) {
+         console.log("Загружаем страницу:", page);
+         // Здесь можно сделать AJAX-запрос или заменить содержимое `.product-list`
+     }
+    }
+ )
+     //Price Range Slider
+     const minRange = document.getElementById('minRange');
+     const maxRange = document.getElementById('maxRange');
+     const minValue = document.getElementById('minValue');
+     const maxValue = document.getElementById('maxValue');
+
+     function updateMin() {
+         if (parseInt(minRange.value) > parseInt(maxRange.value)) {
+             minRange.value = maxRange.value;
+         }
+         minValue.textContent = minRange.value;
+         maxValue.textContent = maxRange.value;
+     }
+     function updateMax() {
+         if (parseInt(minRange.value) > parseInt(maxRange.value)) {
+             maxRange.value = minRange.value;
+         }
+         minValue.textContent = minRange.value;
+         maxValue.textContent = maxRange.value;
+     }
+     minRange.addEventListener('input', updateMin);
+     maxRange.addEventListener('input', updateMax);
+     updateMin();
+     updateMax();
+ </script>
+     </body>
+ </html>
