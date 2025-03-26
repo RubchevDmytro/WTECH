@@ -13,11 +13,11 @@
              <a href ="main_page.html"class="logo">🏠</a>
              <input type="text" placeholder="Hľadať...">
              <button class="search-btn">🔍</button>
-             <a href="login.html"class ="login">Prihlásiť sa / používateľské meno</a>
+             <a href="login.html" class ="login">Prihlásiť sa / používateľské meno</a>
              <a href="cart.html" class="cart-btn">🛒</a>
          </div>
      </header>
- 
+
      <main>
          <aside class="sidebar">
      <h2>Kategórie</h2>
@@ -51,7 +51,7 @@
          </li>
      </ul>
  </aside>
- 
+
          <section class="products">
              <div class="filter-bar">
                  <label>Filtrovať podľa:</label>
@@ -62,10 +62,15 @@
                  </select>
                  <label>Cena:</label>
                  <div class="price-range">
-                     <span>od</span>
-                     <input type="range">
+
+                     <span >od</span>
+                     <span id = "minValue">0</span>
+                     <input id = "minRange" type="range" min="0" max="1000" value="0">
+
+                     <input id="maxRange" type="range" min="0" max="1000" value="1000" >
                      <span>do</span>
-                     <input type="range">
+                     <span id = "maxValue">1000</span>
+
                  </div>
                  <button>OK</button>
              </div>
@@ -181,16 +186,16 @@
      <a href="#" data-page="last">ná</a>
      <a href="#" data-page="next">&gt;</a>
  </div>
- 
- 
+         </section>
+     </main>
      <footer>
          <p>Sme na sociálnych sieťach | O nás</p>
      </footer>
- </body>
- <script>document.addEventListener("DOMContentLoaded", function () {
+ <script>
+     document.addEventListener("DOMContentLoaded", function () {
      const pagination = document.getElementById("pagination");
      const productList = document.querySelector(".product-list");
- 
+
      pagination.addEventListener("click", function (e) {
          if (e.target.tagName === "A" && e.target.dataset.page) {
              e.preventDefault();
@@ -198,11 +203,37 @@
              loadProducts(page);
          }
      });
- 
+
      function loadProducts(page) {
          console.log("Загружаем страницу:", page);
          // Здесь можно сделать AJAX-запрос или заменить содержимое `.product-list`
      }
- });
- <scipt>
+    }
+ )
+     //Price Range Slider
+     const minRange = document.getElementById('minRange');
+     const maxRange = document.getElementById('maxRange');
+     const minValue = document.getElementById('minValue');
+     const maxValue = document.getElementById('maxValue');
+
+     function updateMin() {
+         if (parseInt(minRange.value) > parseInt(maxRange.value)) {
+             minRange.value = maxRange.value;
+         }
+         minValue.textContent = minRange.value;
+         maxValue.textContent = maxRange.value;
+     }
+     function updateMax() {
+         if (parseInt(minRange.value) > parseInt(maxRange.value)) {
+             maxRange.value = minRange.value;
+         }
+         minValue.textContent = minRange.value;
+         maxValue.textContent = maxRange.value;
+     }
+     minRange.addEventListener('input', updateMin);
+     maxRange.addEventListener('input', updateMax);
+     updateMin();
+     updateMax();
+ </script>
+     </body>
  </html>
