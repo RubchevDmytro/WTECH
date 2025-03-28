@@ -83,7 +83,7 @@
         }
 
         .login-btn {
-            background: #FFD700;
+            background: green;
             color: black;
         }
 
@@ -129,7 +129,8 @@
             <input type="password" id="confirm-password" placeholder="Confirm Password">
         </div>
         <button class="submit-btn" onclick="register()">Create Account</button>
-        <button class="login-btn" onclick="location.href='login.html'">Login</button>
+    <p>Have a account?<a href="login.html">Log in</a></p>
+
     </div>
 
     <script>
@@ -145,7 +146,7 @@
                 alert("Please fill all fields.");
                 return;
             }
-
+0
             if (password !== confirmPassword) {
                 alert("Passwords do not match!");
                 return;
