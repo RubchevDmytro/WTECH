@@ -9,7 +9,9 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f8f8f8;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
         }
         header {
             height: 60px;
@@ -17,37 +19,53 @@
             align-items: center;
             justify-content: space-between;
             background: #a52a2a;
-            padding: 0 20px;
+            /*padding: 0 px;*/
+            width: 100%;
+            position: fixed;
+            z-index: 999;
         }
-        nav {
+
+        .top-bar {
             display: flex;
             align-items: center;
             width: 100%;
         }
-        .menu-icon, .logo, .login, .cart-btn {
+
+        .logo, .login, .cart-btn {
             font-size: 20px;
             margin: 0 10px;
             cursor: pointer;
         }
-        input[type="search"] {
+
+        input[type="text"] {
             flex: 1;
             padding: 5px;
             margin: 0 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
         }
-        .product_image{
-            width:80px;
-            height:80px;
+
+        .search-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .product_image {
+            width: 80px;
+            height: 80px;
 
         }
+
         .container {
             width: 80%;
-            margin: 20px auto;
+            margin: 80px auto;
             background: #ddd;
             padding: 20px;
             border-radius: 10px;
         }
+
         .product {
             display: flex;
             align-items: center;
@@ -57,90 +75,104 @@
             border-radius: 8px;
             margin-bottom: 10px;
         }
+
         .total {
             font-size: 18px;
             margin-top: 20px;
         }
+
         .buttons {
             display: flex;
             justify-content: space-between;
             margin-top: 20px;
         }
+
+        button {
+            background: #800000;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #a00000;
+        }
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <button class="menu-icon">☰</button>
-            <a href="main_page.html" class="logo">🏠</a>
-            <input type="search" placeholder="Hľadať...">
-            <a href="login.html" class="login">Prihlásiť sa</a>
-            <a href="cart.html" class="cart-btn">🛒</a>
-        </nav>
-    </header>
+<header>
+    <div class="top-bar">
+        <a href="main_page.html" class="logo">🏠</a>
+        <input type="text" placeholder="Search...">
+        <button class="search-btn">🔍</button>
+        <a href="login.html" class="login">Log In / Username</a>
+        <a href="cart.html" class="cart-btn">🛒</a>
+    </div>
+</header>
 
-    <main class="container">
-        <section id="cart">
-            <article class="product" data-price="120">
-                <img class="product_image" src="box.png" alt="Product">
-                <span class="name">Product</span>
-                <div class="controls">
-                    <button class="minus">-</button>
-                    <span class="count">1</span>
-                    <button class="plus">+</button>
-                </div>
-                <span class="price">$120</span>
-                <button class="delete">🗑</button>
-            </article>
-        </section>
-        <div class="total">Total: $<span id="total-price">120</span></div>
-        <div class="buttons">
-            <button>Continue</button>
-            <button id="confirm-order">Confirm Order</button>
-        </div>
-    </main>
+<main class = "container">
+    <section id="cart">
+        <article class="product" data-price="120">
+            <img class="product_image" src="box.png" alt="Product">
+            <span class="name">Product</span>
+            <div class="controls">
+                <button class="minus">-</button>
+                <span class="count">1</span>
+                <button class="plus">+</button>
+            </div>
+            <span class="price">$120</span>
+            <button class="delete">🗑</button>
+        </article>
+    </section>
+    <div class="total">Total: $<span id="total-price">120</span></div>
+    <div class="buttons">
+        <button id="confirm-order">Confirm Order</button>
+    </div>
+</main>
 
-    <script>
-        document.getElementById("confirm-order").addEventListener("click", function() {
-            window.location.href = "confirmation.html";
+<script>
+    document.getElementById("confirm-order").addEventListener("click", function () {
+        window.location.href = "confirmation.html";
+    });
+
+    function updateTotal() {
+        let total = 0;
+        document.querySelectorAll('.product').forEach(product => {
+            let count = parseInt(product.querySelector('.count').textContent);
+            let price = parseInt(product.dataset.price);
+            total += count * price;
         });
+        document.getElementById('total-price').textContent = total;
+    }
 
-        function updateTotal() {
-            let total = 0;
-            document.querySelectorAll('.product').forEach(product => {
-                let count = parseInt(product.querySelector('.count').textContent);
-                let price = parseInt(product.dataset.price);
-                total += count * price;
-            });
-            document.getElementById('total-price').textContent = total;
-        }
+    document.querySelectorAll('.plus').forEach(button => {
+        button.addEventListener('click', function () {
+            let countElem = this.previousElementSibling;
+            countElem.textContent = parseInt(countElem.textContent) + 1;
+            updateTotal();
+        });
+    });
 
-        document.querySelectorAll('.plus').forEach(button => {
-            button.addEventListener('click', function() {
-                let countElem = this.previousElementSibling;
-                countElem.textContent = parseInt(countElem.textContent) + 1;
+    document.querySelectorAll('.minus').forEach(button => {
+        button.addEventListener('click', function () {
+            let countElem = this.nextElementSibling;
+            let count = parseInt(countElem.textContent);
+            if (count > 1) {
+                countElem.textContent = count - 1;
                 updateTotal();
-            });
+            }
         });
+    });
 
-        document.querySelectorAll('.minus').forEach(button => {
-            button.addEventListener('click', function() {
-                let countElem = this.nextElementSibling;
-                let count = parseInt(countElem.textContent);
-                if (count > 1) {
-                    countElem.textContent = count - 1;
-                    updateTotal();
-                }
-            });
+    document.querySelectorAll('.delete').forEach(button => {
+        button.addEventListener('click', function () {
+            this.parentElement.remove();
+            updateTotal();
         });
-
-        document.querySelectorAll('.delete').forEach(button => {
-            button.addEventListener('click', function() {
-                this.parentElement.remove();
-                updateTotal();
-            });
-        });
-    </script>
+    });
+</script>
 </body>
 </html>
 

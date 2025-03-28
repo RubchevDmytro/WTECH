@@ -107,15 +107,18 @@ input[type="text"] {
     font-size: 18px;
 }
 
-
-.add-to-cart {
-    background: #4caf50;
+button {
+    background: #800000;
     color: white;
-    padding: 10px;
     border: none;
+    padding: 5px 10px;
     cursor: pointer;
+    border-radius: 5px;
 }
 
+button:hover {
+    background: #a00000;
+}
 
 footer {
     text-align: center;

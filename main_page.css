@@ -143,11 +143,15 @@ input[type="number"] {
 .filter-bar label,
 .filter-bar select,
 .filter-bar input,
-.filter-bar button {
+.filter-bar button{
     margin-right: 10px;
     font-size: 14px;
     border-radius: 6px;
 }
+.filter-bar button{
+    background: #450203;
+}
+
 
 /* Контейнер для товаров */
 .products {
@@ -238,6 +242,19 @@ footer {
     color: white;
     padding: 10px;
     margin-top: auto;
+}
+
+button {
+    background: #800000;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background: #a00000;
 }
 
 /**************************************************/
