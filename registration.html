@@ -9,23 +9,27 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: url('background.png') no-repeat center center fixed;
             background-size: cover;
         }
-.top-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #a52a2a;
-    padding: 10px;
-    color: white;
-}
+        header {
+            height: 150px;
+            align-items: center;
+            width: 100%;
+            margin-top: 40px;
+        }
 
-.top-bar input {
-    flex-grow: 1;
-    margin: 0 10px;
-    padding: 5px;
-}
+        .logo-image {
+            width: 150px; /*same as header size*/
+            height: 100%;
+            margin-left: auto; /*Centering logo*/
+            margin-right: auto;
+            display: block;
+        }
+        .top-bar input {
+            flex-grow: 1;
+            margin: 0 10px;
+            padding: 5px;
+        }
 
         .container {
             width: 80%;
@@ -82,79 +86,64 @@
             background: #a52a2a;
         }
 
-        .login-btn {
-            background: green;
-            color: black;
-        }
-
-        .login-btn:hover {
-            background: #DAA520;
-        }
     </style>
 </head>
 <body>
-     <header>
-         <div class="top-bar">
-             <div class="menu-icon">☰</div>
-               <a href ="main_page.html"class="logo">🏠</a>
-             <input type="text" placeholder="Hľadať...">
-             <button class="search-btn">🔍</button>
-             <a href="login.html"class ="login">Prihlásiť sa / používateľské meno</a>
-             <a href="cart.html" class="cart-btn">🛒</a>
-         </div>
-     </header>
+<header>
+    <img src="logo.png" alt="Logo" class="logo-image">
+</header>
 
-    <div class="container">
-        <div class="title">Registration</div>
-        <div class="form-group">
-            <input type="text" id="name" placeholder="Name">
-        </div>
-        <div class="form-group">
-            <input type="text" id="surname" placeholder="Surname">
-        </div>
-        <div class="form-group">
-            <input type="email" id="email" placeholder="Email">
-        </div>
-        <div class="form-group">
-            <select id="gender">
-                <option value="">Male/Female</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <input type="password" id="password" placeholder="Password">
-        </div>
-        <div class="form-group">
-            <input type="password" id="confirm-password" placeholder="Confirm Password">
-        </div>
-        <button class="submit-btn" onclick="register()">Create Account</button>
+<div class="container">
+    <div class="title">Registration</div>
+    <div class="form-group">
+        <input type="text" id="name" placeholder="Name">
+    </div>
+    <div class="form-group">
+        <input type="text" id="surname" placeholder="Surname">
+    </div>
+    <div class="form-group">
+        <input type="email" id="email" placeholder="Email">
+    </div>
+    <div class="form-group">
+        <select id="gender">
+            <option value="">Male/Female</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="password" id="password" placeholder="Password">
+    </div>
+    <div class="form-group">
+        <input type="password" id="confirm-password" placeholder="Confirm Password">
+    </div>
+    <button class="submit-btn" onclick="register()">Create Account</button>
     <p>Have a account?<a href="login.html">Log in</a></p>
 
-    </div>
+</div>
 
-    <script>
-        function register() {
-            let name = document.getElementById("name").value;
-            let surname = document.getElementById("surname").value;
-            let email = document.getElementById("email").value;
-            let gender = document.getElementById("gender").value;
-            let password = document.getElementById("password").value;
-            let confirmPassword = document.getElementById("confirm-password").value;
+<script>
+    function register() {
+        let name = document.getElementById("name").value;
+        let surname = document.getElementById("surname").value;
+        let email = document.getElementById("email").value;
+        let gender = document.getElementById("gender").value;
+        let password = document.getElementById("password").value;
+        let confirmPassword = document.getElementById("confirm-password").value;
 
-            if (!name || !surname || !email || !gender || !password || !confirmPassword) {
-                alert("Please fill all fields.");
-                return;
-            }
-0
-            if (password !== confirmPassword) {
-                alert("Passwords do not match!");
-                return;
-            }
-
-            alert("Registration successful!");
+        if (!name || !surname || !email || !gender || !password || !confirmPassword) {
+            alert("Please fill all fields.");
+            return;
         }
-    </script>
+        0
+        if (password !== confirmPassword) {
+            alert("Passwords do not match!");
+            return;
+        }
+
+        alert("Registration successful!");
+    }
+</script>
 
 </body>
 </html>
