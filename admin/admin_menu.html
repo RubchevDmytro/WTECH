@@ -9,7 +9,6 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: url('background.png') no-repeat center center fixed;
     background-size: cover;
 }
 .top-bar {
@@ -21,11 +20,25 @@ body {
     color: white;
     position: relative;
 }
-.top-bar input {
-    flex-grow: 1;
+.menu-icon, .logo,  .cart-btn {
+    font-size: 20px;
     margin: 0 10px;
-    padding: 5px;
+    cursor: pointer;
 }
+input[type="text"] {
+    flex: 1;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.search-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
 .container {
     width: 80%;
     max-width: 600px;
@@ -105,7 +118,7 @@ body {
     <div class="top-bar">
         <div class="menu-icon">☰</div>
         <a href="../main_page.html" class="logo">🏠</a>
-        <input type="text" placeholder="Hľadať...">
+        <input type="text" placeholder="Search...">
         <button class="search-btn">🔍</button>
 
         <!-- Блок Admin с всплывающим окном -->
