@@ -4,6 +4,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
+    background: #ffffff;
 }
 
 /* Хэдер */
@@ -16,6 +17,7 @@ header {
     /*padding: 0 px;*/
     width: 100%;
     position: fixed;
+    z-index: 999;
 }
 
 .top-bar {
@@ -95,7 +97,7 @@ input[type="number"] {
 
 .sidebar {
     width: 220px;
-    background: darkred;
+    background: rgba(139, 0, 0, 0.85);
     color: white;
     padding: 15px;
     position: fixed;
@@ -112,20 +114,23 @@ input[type="number"] {
 
 
 .filter-bar {
-    position: fixed;
-    top: 60px;
-    left: 250px;
+    position: absolute;
+    width: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    height: auto;
     right: 0;
     background: #800000;
+    border-radius: 25px;
     color: white;
     padding: 10px;
+
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    z-index: 999;
+    justify-content: center;
     overflow-x: auto;
     white-space: nowrap;
-    height: auto;
 }
 .slider-container {
     width: 300px;
@@ -141,11 +146,12 @@ input[type="number"] {
 .filter-bar button {
     margin-right: 10px;
     font-size: 14px;
+    border-radius: 6px;
 }
 
 /* Контейнер для товаров */
 .products {
-    margin-left: 240px;
+    /*margin-left: 240px;*/
     padding: 20px;
     width: 100%;
 }
@@ -226,43 +232,6 @@ input[type="number"] {
     font-weight: bold;
 }
 
-/*@media (max-width: 1024px) {*/
-/*    .sidebar {*/
-/*        position: relative;*/
-/*        width: 100%;*/
-/*        text-align: left;*/
-/*        top:0px;*/
-/*    }*/
-
-/*    .products {*/
-/*        margin-left: 0;*/
-/*    }*/
-
-/*    .product-list {*/
-/*        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));*/
-/*    }*/
-/*    .filter-bar {*/
-/*        flex-direction: column;*/
-/*        align-items: center;*/
-/*        left: 505px;*/
-/*        padding: 10px;*/
-/*    }*/
-
-/*    .filter-bar label,*/
-/*    .filter-bar select,*/
-/*    .filter-bar input,*/
-/*    .filter-bar button {*/
-/*        width: 100%;*/
-/*        text-align: center;*/
-/*        margin-bottom: 5px;*/
-/*    }*/
-
-/*    .price-range {*/
-/*        flex-direction: column;*/
-/*        align-items: center;*/
-/*    }*/
-/*}*/
-
 
 /**************************************************/
 
@@ -303,10 +272,10 @@ input[type="number"] {
     }
 
     .products {
-        margin-left: 200px;
+        /*margin-left: 200px;*/
         padding: 15px;
 
-        width: calc(100% - 200px);
+        /*width: calc(100% - 200px);*/
         max-width: 100%;
         box-sizing: border-box;
     }
@@ -320,10 +289,21 @@ input[type="number"] {
 
     /* Sliders and Filters */
     .filter-bar {
-        left:210px;
+        position: absolute;
+        width: auto;
         top:50px;
         padding: 8px;
         font-size: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        overflow-x: auto;
+        white-space: nowrap;
+
     }
 
     .filter-bar label,
@@ -401,17 +381,26 @@ input[type="number"] {
     }
 
     .filter-bar {
-        flex-direction: column;
-        position: fixed;
-        top: 50px;
+        position: absolute;
+        width: 80%;
+        left: 50%;
+        transform: translateX(-50%);
+        height: auto;
+
         background: #800000;
+        border-radius: 15px;
         color: white;
+
+
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
-        z-index: 999;
+        justify-content: center;
+        gap: 8px;
         overflow-x: auto;
-        white-space: nowrap;
+        white-space: normal;
+
+        z-index: 1;
     }
 
 
@@ -443,35 +432,8 @@ input[type="number"] {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     .products {
-        margin: 0 auto;
+        margin-top:  100px;
         padding: 15px;
         width: 100%;
         box-sizing: border-box;
@@ -492,13 +454,14 @@ input[type="number"] {
 
     .sidebar {
         width: 150px;
-        background: darkred;
+        background: rgba(139, 0, 0, 0.85);
         color: white;
         position: fixed;
         top: 50px;
         bottom: 0;
         left: -180px;
         overflow-y: auto;
+        z-index: 2;
     }
     .sidebar.active{
         left:0;
