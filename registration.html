@@ -95,55 +95,33 @@
 
 <div class="container">
     <div class="title">Registration</div>
-    <div class="form-group">
-        <input type="text" id="name" placeholder="Name">
-    </div>
-    <div class="form-group">
-        <input type="text" id="surname" placeholder="Surname">
-    </div>
-    <div class="form-group">
-        <input type="email" id="email" placeholder="Email">
-    </div>
-    <div class="form-group">
-        <select id="gender">
-            <option value="">Male/Female</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <input type="password" id="password" placeholder="Password">
-    </div>
-    <div class="form-group">
-        <input type="password" id="confirm-password" placeholder="Confirm Password">
-    </div>
-    <button class="submit-btn" onclick="register()">Create Account</button>
-    <p>Have a account?<a href="login.html">Log in</a></p>
-
+    <form action="/PHP/register.php" method="POST">
+        <div class="form-group">
+            <input type="text" id="name" name="name" placeholder="Name" required>
+        </div>
+        <div class="form-group">
+            <input type="text" id="surname" name="surname" placeholder="Surname" required>
+        </div>
+        <div class="form-group">
+            <input type="email" id="email" name="email" placeholder="Email" required>
+        </div>
+        <div class="form-group">
+            <select id="gender" name="gender" required>
+                <option value="">Male/Female</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="password" id="password" name="password" placeholder="Password" required>
+        </div>
+        <div class="form-group">
+            <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" required>
+        </div>
+        <button type="submit" class="submit-btn">Create Account</button>
+    </form>
+    <p>Have an account? <a href="login.html">Log in</a></p>
 </div>
-
-<script>
-    function register() {
-        let name = document.getElementById("name").value;
-        let surname = document.getElementById("surname").value;
-        let email = document.getElementById("email").value;
-        let gender = document.getElementById("gender").value;
-        let password = document.getElementById("password").value;
-        let confirmPassword = document.getElementById("confirm-password").value;
-
-        if (!name || !surname || !email || !gender || !password || !confirmPassword) {
-            alert("Please fill all fields.");
-            return;
-        }
-        0
-        if (password !== confirmPassword) {
-            alert("Passwords do not match!");
-            return;
-        }
-
-        alert("Registration successful!");
-    }
-</script>
 
 </body>
 </html>
