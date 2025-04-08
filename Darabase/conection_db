@@ -1,0 +1,1 @@
+psql -h wtechfiit.postgres.database.azure.com -p 5432 -U WTECH2025 wteh
