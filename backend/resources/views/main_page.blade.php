@@ -16,6 +16,9 @@
             <button type="submit" class="search-btn">🔍</button>
         </form>
         @auth
+            <div>
+                Logged in as: {{ Auth::user()->email }} (is_admin: {{ Auth::user()->is_admin ? 'true' : 'false' }})
+            </div>
             <a href="{{ route('logout') }}" class="login" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 {{ Auth::user()->email }} (Log Out)
             </a>
@@ -33,20 +36,24 @@
     <aside class="sidebar">
         <h2>Kategórie</h2>
         <ul class="category-list">
-            @foreach($categories as $category)
-                <li>
-                    <strong>{{ $category->name }}</strong>
-                    <ul>
-                        @foreach($category->subcategories as $subcategory)
-                            <li>
-                                <a href="{{ route('main_page', ['category' => $subcategory->slug]) }}">
-                                    {{ $subcategory->name }}
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </li>
-            @endforeach
+            @if(isset($categories) && $categories->isNotEmpty())
+                @foreach($categories as $category)
+                    <li>
+                        <strong>{{ $category->name }}</strong>
+                        <ul>
+                            @foreach($category->subcategories as $subcategory)
+                                <li>
+                                    <a href="{{ route('main_page', ['category' => $subcategory->slug]) }}">
+                                        {{ $subcategory->name }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
+                @endforeach
+            @else
+                <li>No categories available.</li>
+            @endif
         </ul>
     </aside>
 

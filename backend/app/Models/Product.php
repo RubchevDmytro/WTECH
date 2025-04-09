@@ -5,20 +5,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $fillable = ['category_id', 'description', 'left_stock', 'name', 'price', 'rating'];
+    protected $fillable = ['category_id', 'name', 'description', 'left_stock', 'price', 'rating'];
 
-    public function category()
+    public function images()
     {
-        return $this->belongsTo(Category::class);
+        return $this->hasMany(ProductImage::class);
     }
 
-    public function carts()
+    public function primaryImage()
     {
-        return $this->hasMany(Cart::class);
-    }
-
-    public function orderDetails()
-    {
-        return $this->hasMany(OrderDetail::class);
+        // Предположим, у вас есть связь с таблицей изображений
+        $image = $this->images()->where('is_primary', true)->first();
+        if ($image) {
+            return (object) [
+                'image_data' => $image->data, // Данные изображения (должны быть строкой, например, BLOB из базы данных)
+                'mime_type' => $image->mime_type, // MIME-тип (например, 'image/jpeg')
+            ];
+        }
+        return null;
     }
 }

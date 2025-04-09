@@ -29,8 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 });
 
+Route::get('/admin', function () {
+    return view('admin.admin_menu');
+})->name('admin');
 
-
-Route::get('/admin/admin_menu', function () {
-    return 'Welcome to Admin Menu!';
-})->middleware('auth')->name('admin.menu');
