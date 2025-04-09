@@ -59,7 +59,7 @@ public function register(Request $request)
             if ($request->email === 'admin@example.com' && Auth::user()->is_admin) {
                 return redirect('/admin/admin_menu');
             }
-            return redirect('/main_page');
+            return redirect('/');
         }
 
         return back()->withErrors(['email' => 'Invalid credentials']);
