@@ -12,7 +12,6 @@ class AuthController extends Controller
     {
         return view('auth.register');
     }
-
 public function register(Request $request)
 {
 
@@ -40,7 +39,7 @@ public function register(Request $request)
 
     Auth::login($user);
 
-    return redirect('/main_page')->with('success', 'User successfully registered!');
+    return redirect('/login')->with('success', 'User successfully registered!');
 }
 
     public function showLoginForm()
@@ -57,6 +56,9 @@ public function register(Request $request)
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            if ($request->email === 'admin@example.com' && Auth::user()->is_admin) {
+                return redirect('/admin/admin_menu');
+            }
             return redirect('/main_page');
         }
 
