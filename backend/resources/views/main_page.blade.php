@@ -16,19 +16,16 @@
             <button type="submit" class="search-btn">🔍</button>
         </form>
         @auth
-            <div>
-                Logged in as: {{ Auth::user()->email }} (is_admin: {{ Auth::user()->is_admin ? 'true' : 'false' }})
-            </div>
-            <a href="{{ route('logout') }}" class="login" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                {{ Auth::user()->email }} (Log Out)
-            </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
-        @else
-            <a href="{{ route('login.form') }}" class="login">Log In</a>
-        @endauth
-        <a href="{{ route('cart') }}" class="cart-btn">🛒</a>
+    <div>
+        Logged in as: {{ Auth::user()->email }} (is_admin: {{ Auth::user()->is_admin ? 'true' : 'false' }})
+    </div>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
+        @csrf
+        <button type="submit" class="login">Log Out</button>
+    </form>
+@else
+    <a href="{{ route('login.form') }}" class="login">Log In</a>
+@endauth<a href="{{ route('cart') }}" class="cart-btn">🛒</a>
     </div>
 </header>
 

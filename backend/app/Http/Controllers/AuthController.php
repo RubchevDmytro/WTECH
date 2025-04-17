@@ -47,32 +47,42 @@ class AuthController extends Controller
     {
         return view('auth.login');
     }
+public function logout(Request $request)
+{
+    \Log::info('User logged out', ['email' => Auth::user()->email]);
 
-    public function login(Request $request)
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect()->route('main_page')->with('success', 'Logged out successfully.');
+}
+public function login(Request $request)
     {
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
+
         \Log::info('Attempting login', [
             'email' => $request->email,
         ]);
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
 
             \Log::info('User logged in', [
                 'email' => $request->email,
                 'is_admin' => Auth::user()->is_admin,
             ]);
 
-
-            if ($request->email === 'admin@example.com' && Auth::user()->is_admin) {
-                return redirect('/admin/admin_menu');
+            // Перенаправляем в админ-меню только если пользователь — админ
+            if (Auth::user()->is_admin) {
+                return redirect()->route('admin.menu');
             }
-            return redirect('/');
+
+            return redirect()->route('main_page');
         }
 
         return back()->withErrors(['email' => 'Invalid credentials']);
-    }
-}
+    }}

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
@@ -11,17 +12,16 @@ class CartController extends Controller
     public function index()
     {
         $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
-        return view('cart', compact('cartItems'));
+        $totalPrice = $cartItems->sum(function ($item) {
+            return $item->quantity * $item->product->price;
+        });
+
+        return view('cart', compact('cartItems', 'totalPrice'));
     }
 
     public function add(Request $request, Product $product)
     {
-        $request->validate([
-            'quantity' => 'required|integer|min:1',
-        ]);
-
-        // Проверка наличия товара на складе
-        if ($product->left_stock < $request->quantity) {
+        if ($product->stock < $request->quantity) {
             return redirect()->back()->with('error', 'Not enough stock available.');
         }
 
@@ -35,6 +35,40 @@ class CartController extends Controller
             ]
         );
 
-        return redirect()->back()->with('success', 'Product added to cart!');
+        return redirect()->route('cart')->with('success', 'Product added to cart.');
+    }
+
+    public function update(Request $request, Cart $cart)
+    {
+        if ($cart->user_id !== Auth::id()) {
+            return redirect()->route('cart')->with('error', 'Unauthorized action.');
+        }
+
+        $action = $request->input('action');
+        $quantity = $cart->quantity;
+
+        if ($action === 'increase') {
+            if ($cart->product->stock <= $quantity) {
+                return redirect()->route('cart')->with('error', 'Not enough stock available.');
+            }
+            $quantity++;
+        } elseif ($action === 'decrease' && $quantity > 1) {
+            $quantity--;
+        }
+
+        $cart->update(['quantity' => $quantity]);
+
+        return redirect()->route('cart')->with('success', 'Cart updated.');
+    }
+
+    public function remove(Cart $cart)
+    {
+        if ($cart->user_id !== Auth::id()) {
+            return redirect()->route('cart')->with('error', 'Unauthorized action.');
+        }
+
+        $cart->delete();
+
+        return redirect()->route('cart')->with('success', 'Product removed from cart.');
     }
 }
