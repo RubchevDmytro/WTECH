@@ -16,6 +16,12 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/', [ProductController::class, 'index'])->name('main_page');
 Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
 
+
+Route::get('/order/confirm', [OrderController::class, 'confirm'])->name('order.confirm');
+Route::post('/order/create', [OrderController::class, 'create'])->name('order.create');
+
+Route::get('/autocomplete', [ProductController::class, 'autocomplete'])->name('autocomplete');
+
 Route::middleware('auth')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');

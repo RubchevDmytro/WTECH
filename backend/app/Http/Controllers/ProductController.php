@@ -8,56 +8,113 @@ use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Cache;
 class ProductController extends Controller
 {
     /**
      * Показать главную страницу с продуктами (для обычных пользователей).
      */
-    public function index(Request $request)
-    {
-        \Log::info('ProductController::index accessed', [
-            'user' => Auth::check() ? Auth::user()->email : 'guest',
-            'is_admin' => Auth::check() ? Auth::user()->is_admin : 'not logged in',
+public function index(Request $request)
+{
+    \Log::info('ProductController::index accessed', [
+        'user' => Auth::check() ? Auth::user()->email : 'guest',
+        'is_admin' => Auth::check() ? Auth::user()->is_admin : 'not logged in',
+    ]);
+
+    try {
+        $categories = Category::with('subcategories')->get();
+    } catch (\Exception $e) {
+        \Log::error('Failed to load categories', [
+            'error' => $e->getMessage(),
         ]);
-
-        try {
-            $categories = Category::with('subcategories')->get();
-        } catch (\Exception $e) {
-            \Log::error('Failed to load categories', [
-                'error' => $e->getMessage(),
-            ]);
-            $categories = collect();
-        }
-
-        $products = Product::query();
-
-        if ($request->has('sort')) {
-            if ($request->sort === 'price_asc') {
-                $products->orderBy('price', 'asc');
-            } elseif ($request->sort === 'price_desc') {
-                $products->orderBy('price', 'desc');
-            } elseif ($request->sort === 'rating') {
-                $products->orderBy('rating', 'desc');
-            }
-        }
-
-        if ($request->has('min_price')) {
-            $products->where('price', '>=', $request->min_price);
-        }
-
-        if ($request->has('max_price')) {
-            $products->where('price', '<=', $request->max_price);
-        }
-
-        $products = $products->paginate(10);
-
-        return view('main_page', compact('categories', 'products'));
+        $categories = collect();
     }
 
-    /**
-     * Отобразить список всех продуктов (для админ-панели).
-     */
+    $minPrice = Cache::remember('products_min_price', 3600, function () {
+        return Product::min('price') ?? 0;
+    });
+    $maxPrice = Cache::remember('products_max_price', 3600, function () {
+        return Product::max('price') ?? 1000;
+    });
+
+    $products = Product::query();
+
+    if ($request->has('category')) {
+        $products->whereHas('subcategory', function ($q) use ($request) {
+            $q->where('slug', $request->query('category'));
+        });
+    }
+
+    // Обрабатываем min_price и max_price с запятой
+    $minPriceInput = $request->has('min_price') ? str_replace(',', '.', $request->min_price) : $minPrice;
+    $maxPriceInput = $request->has('max_price') ? str_replace(',', '.', $request->max_price) : $maxPrice;
+
+    $minPriceInput = (float) $minPriceInput;
+    $maxPriceInput = (float) $maxPriceInput;
+
+    $products->where('price', '>=', $minPriceInput);
+    $products->where('price', '<=', $maxPriceInput);
+
+    // Логируем значения для отладки
+    \Log::info('Price filter applied', [
+        'min_price' => $minPriceInput,
+        'max_price' => $maxPriceInput,
+    ]);
+
+    if ($request->has('search')) {
+        $search = trim($request->query('search'));
+        $search = str_replace(['%', '_', '\\'], ['\%', '\_', '\\\\'], $search);
+        if ($search) {
+            $products->where(function ($q) use ($search) {
+                $q->where('name', 'ILIKE', "%{$search}%")
+                  ->orWhere('description', 'ILIKE', "%{$search}%");
+            });
+        }
+    }
+
+    if ($request->has('sort')) {
+        if ($request->sort === 'price_asc') {
+            $products->orderBy('price', 'asc');
+        } elseif ($request->sort === 'price_desc') {
+            $products->orderBy('price', 'desc');
+        } elseif ($request->sort === 'rating') {
+            $products->orderBy('rating', 'desc');
+        }
+    }
+
+    $perPage = $request->query('per_page', 12);
+    $products = $products->paginate($perPage);
+    $products->appends($request->query());
+
+    return view('main_page', compact('categories', 'products', 'minPrice', 'maxPrice'));
+}public function autocomplete(Request $request)
+{
+    $search = trim($request->query('search'));
+    if (!$search) {
+        return response()->json([]);
+    }
+
+    // Экранируем специальные символы для LIKE
+    $search = str_replace(['%', '_', '\\'], ['\%', '\_', '\\\\'], $search);
+
+    $suggestions = Product::query()
+        ->where('name', 'ILIKE', "%{$search}%")
+        ->orWhere('description', 'ILIKE', "%{$search}%")
+        ->select('name')
+        ->distinct()
+        ->take(5) // Ограничиваем количество предложений
+        ->get()
+        ->pluck('name')
+        ->toArray();
+
+    \Log::info('Autocomplete suggestions', [
+        'search' => $search,
+        'suggestions' => $suggestions,
+    ]);
+
+    return response()->json($suggestions);
+}
+
     public function adminIndex(Request $request)
     {
         \Log::info('ProductController::adminIndex accessed', [

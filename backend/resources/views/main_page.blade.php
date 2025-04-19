@@ -12,10 +12,13 @@
         <div class="menu-icon">☰</div>
         <a href="{{ route('main_page') }}" class="logo">🏠</a>
         <form method="GET" action="{{ route('main_page') }}" class="search-form">
-            <input type="text" placeholder="Search..." name="search" value="{{ request()->query('search') }}">
-            <button type="submit" class="search-btn">🔍</button>
-        </form>
-        @auth
+    <div class="autocomplete-wrapper">
+        <input type="text" placeholder="Search..." name="search" id="search-input" value="{{ request()->query('search') }}" autocomplete="off">
+        <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
+    </div>
+    <button type="submit" class="search-btn">🔍</button>
+</form>
+@auth
     <div>
         Logged in as: {{ Auth::user()->email }} (is_admin: {{ Auth::user()->is_admin ? 'true' : 'false' }})
     </div>
@@ -71,12 +74,12 @@
                     <option value="rating" {{ request()->query('sort') == 'rating' ? 'selected' : '' }}>Hodnotenie</option>
                 </select>
                 <label>Cena:</label>
-                <div class="slider-container">
+                <div class="slider-container" data-min="{{ $minPrice }}" data-max="{{ $maxPrice }}">
                     <div class="inputs">
                         <span>from</span>
-                        <input type="number" id="min-price" name="min_price" value="{{ request()->query('min_price', 0) }}" min="0" max="1000">
+                        <input type="text" id="min-price" name="min_price" value="{{ number_format((float) str_replace(',', '.', request()->query('min_price', $minPrice)), 2, ',', '') }}" data-min="{{ $minPrice }}" data-max="{{ $maxPrice }}">
                         <span>to</span>
-                        <input type="number" id="max-price" name="max_price" value="{{ request()->query('max_price', 1000) }}" min="0" max="1000">
+                        <input type="text" id="max-price" name="max_price" value="{{ number_format((float) str_replace(',', '.', request()->query('max_price', $maxPrice)), 2, ',', '') }}" data-min="{{ $minPrice }}" data-max="{{ $maxPrice }}">
                     </div>
                     <div class="slider-wrapper">
                         <div class="slider" id="slider">
@@ -84,9 +87,10 @@
                             <div class="thumb" id="min-thumb"></div>
                             <div class="thumb" id="max-thumb"></div>
                         </div>
+                                        </div></div><button type="submit">OK</button>
+
+
                     </div>
-                </div>
-                <button type="submit">OK</button>
             </form>
         </div>
         <h2 style="margin-top:60px;">Zoznam produktov</h2>
@@ -109,10 +113,11 @@
                 <p>Žiadne produkty nenájdené.</p>
             @endforelse
         </div>
-        <div class="pagination" id="pagination">
-            {{ $products->appends(request()->query())->links('vendor.pagination.default') }}
-        </div>
-    </section>
+    <div class="pagination" id="pagination">
+    {{ $products->appends(request()->query())->links('vendor.pagination.custom') }}
+</div>
+
+</section>
 </main>
 <footer>
     <p>© 2025 Store | Follow us on social media | About us</p>

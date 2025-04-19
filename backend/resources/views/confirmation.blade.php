@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart</title>
+    <title>Order Confirmation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -98,6 +98,21 @@
             font-size: 14px;
             margin-top: 10px;
         }
+        .shipping-address {
+            margin-top: 20px;
+        }
+        .shipping-address label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .shipping-address input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -122,45 +137,38 @@
 </header>
 
 <main class="container">
-    <section id="cart">
+    <section id="order-confirmation">
+        <h2>Confirm Your Order</h2>
         @forelse ($cartItems as $item)
             <article class="product" data-price="{{ $item->product->price }}">
                 <img class="product_image" src="{{ asset('images/' . ($item->product->image ?? 'box.png')) }}" alt="{{ $item->product->name }}">
                 <span class="name">{{ $item->product->name }}</span>
-                <div class="controls">
-                    <form action="{{ route('cart.update', $item->id) }}" method="POST" style="display: inline;">
-                        @csrf
-                        @method('PATCH')
-                        <button type="submit" name="action" value="decrease" class="minus">-</button>
-                        <span class="count">{{ $item->quantity }}</span>
-                        <button type="submit" name="action" value="increase" class="plus">+</button>
-                    </form>
-                </div>
+                <span class="count">{{ $item->quantity }}</span>
                 <span class="price">${{ $item->product->price * $item->quantity }}</span>
-                <form action="{{ route('cart.remove', $item->id) }}" method="POST" style="display: inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="delete">🗑</button>
-                </form>
             </article>
         @empty
             <p>Your cart is empty.</p>
         @endforelse
+
+        @if ($cartItems->isNotEmpty())
+            <div class="total">Total: $<span id="total-price">{{ $totalPrice }}</span></div>
+            <div class="shipping-address">
+                <form action="{{ route('order.create') }}" method="POST">
+                    @csrf
+                    <label for="shipping_address">Shipping Address:</label>
+                    <input type="text" id="shipping_address" name="shipping_address" required>
+                    <div class="buttons">
+                        <button type="submit" id="place-order">Place Order</button>
+                        <a href="{{ route('cart') }}"><button type="button">Back to Cart</button></a>
+                    </div>
+                </form>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="error">{{ session('error') }}</div>
+        @endif
     </section>
-
-    @if ($cartItems->isNotEmpty())
-        <div class="total">Total: $<span id="total-price">{{ $totalPrice }}</span></div>
-        <div class="buttons">
-            <a href="{{ route('order.confirm') }}"><button type="button" id="confirm-order">Confirm Order</button></a>
-        </div>
-    @endif
-
-    @if (session('success'))
-        <div class="success">{{ session('success') }}</div>
-    @endif
-    @if (session('error'))
-        <div class="error">{{ session('error') }}</div>
-    @endif
 </main>
 
 <script>

@@ -1,3 +1,21 @@
+.thumb {
+    width: 16px;
+    height: 16px;
+    background-color: #a52a2a;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.thumb.active {
+    background-color: #ff4500; /* Изменение цвета при перетаскивании */
+}
+
+
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -79,7 +97,59 @@ main {
     border: 1px solid red;
     border-radius: 5px;
 }
+.autocomplete-wrapper {
+    position: relative;
+    flex: 1;
+}
 
+.search-form input[type="text"] {
+    flex: 1;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.autocomplete-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
+
+.suggestion-item.selected {
+    background-color: #a52a2a;
+    color: white;
+}
+
+/* Убедимся, что форма выглядит корректно */
+.search-form {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
 /* Фильтры */
 .filter-bar {
     position: fixed; /* Оставляем fixed, чтобы фильтр-бар был всегда виден */
@@ -619,5 +689,73 @@ footer {
     .pagination .active span {
         background: green;
         font-weight: bold;
+    }
+/* Стили для пагинации */
+.pagination-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination-list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pagination-item {
+    margin: 0 5px;
+}
+
+.pagination-link {
+    display: inline-block;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+    background-color: #fff;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination-link:hover {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+.pagination-item.active .pagination-link {
+    background-color: #a52a2a; /* Цвет, совпадающий с темой сайта */
+    color: white;
+    border-color: #a52a2a;
+}
+
+.pagination-item.disabled .pagination-link {
+    color: #aaa;
+    border-color: #ddd;
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+.pagination-info {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Адаптивность */
+@media (max-width: 600px) {
+    .pagination-list {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .pagination-item {
+        margin: 5px;
+    }
+
+    .pagination-link {
+        padding: 6px 10px;
     }
 }
