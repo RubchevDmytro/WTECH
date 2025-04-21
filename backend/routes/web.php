@@ -31,16 +31,12 @@ Route::middleware('auth')->group(function () {
 
 
     Route::middleware('admin')->group(function () {
-        Route::get('/admin', function () {
-            return view('admin.admin_menu');
-        })->name('admin');
-
-        Route::get('/admin/admin_menu', function () {
-            return view('admin.admin_menu');
-        })->name('admin.menu');
+        Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+        Route::get('/admin/admin_menu', [AdminController::class, 'index'])->name('admin.menu');
 
         Route::resource('categories', CategoryController::class);
         Route::resource('products', ProductController::class)->except(['index']);
         Route::get('/products', [ProductController::class, 'adminIndex'])->name('products.index');
     });
+
 });

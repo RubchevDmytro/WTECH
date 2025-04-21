@@ -5,6 +5,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $product->name }}</title>
     <link rel="stylesheet" href="{{ asset('css/main_page.css') }}">
+    <style>
+        .product-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-images {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .main-image img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+        }
+
+        .thumbnail-images {
+            display: flex;
+            gap: 10px;
+        }
+
+        .thumbnail-images img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .thumbnail-images img:hover {
+            border-color: #a52a2a;
+        }
+
+        .product-info {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .product-info h3 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .rating {
+            font-size: 18px;
+        }
+
+        .product-info p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .product-actions {
+            flex: 1;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .product-actions .price {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-control button {
+            width: 30px;
+            height: 30px;
+            background-color: #ddd;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .quantity-control input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        .add-to-cart-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #218838;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -39,32 +162,56 @@
             <div class="error">{{ session('error') }}</div>
         @endif
 
-        <h2 style="margin-top:60px;">Product Details</h2>
-        <div class="product-list">
-            <div class="product">
-                @if ($product->image)
-                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
-                @else
-                    <img src="{{ asset('images/box.png') }}" alt="Default Product Image">
-                @endif
+        <h2 style="margin-top:60px; text-align: center;">Product Details</h2>
+        <div class="product-details">
+            <!-- Изображения продукта -->
+            <div class="product-images">
+                <div class="main-image">
+                    @if ($product->image)
+                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+                    @else
+                        <img src="{{ asset('images/box.png') }}" alt="Default Product Image">
+                    @endif
+                </div>
+                <div class="thumbnail-images">
+                    <!-- Добавляем заглушки для дополнительных изображений -->
+                    <img src="{{ asset('images/box.png') }}" alt="Thumbnail 1">
+                    <img src="{{ asset('images/box.png') }}" alt="Thumbnail 2">
+                    <img src="{{ asset('images/box.png') }}" alt="Thumbnail 3">
+                    <img src="{{ asset('images/box.png') }}" alt="Thumbnail 4">
+                </div>
+            </div>
+
+            <!-- Информация о продукте -->
+            <div class="product-info">
                 <h3>{{ $product->name }}</h3>
-                <p>{{ str_repeat('⭐', $product->rating) . str_repeat('☆', 5 - $product->rating) }}</p>
-                <p>{{ $product->price }} €</p>
-                <p>Stock: {{ $product->left_stock ?? 0 }}</p>
-                <p>Category: {{ $product->subcategory ? ($product->subcategory->category ? $product->subcategory->category->name : 'N/A') : 'N/A' }}</p>
-                <p>Subcategory: {{ $product->subcategory ? $product->subcategory->name : 'N/A' }}</p>
+                <p class="rating">{{ str_repeat('⭐', $product->rating) . str_repeat('☆', 5 - $product->rating) }}</p>
+                <p><strong>Description:</strong> {{ $product->description ?? 'No description available.' }}</p>
+                <p><strong>Stock:</strong> {{ $product->stock ?? 0 }}</p>
+                <p><strong>Category:</strong> {{ $product->subcategory ? ($product->subcategory->category ? $product->subcategory->category->name : 'N/A') : 'N/A' }}</p>
+                <p><strong>Subcategory:</strong> {{ $product->subcategory ? $product->subcategory->name : 'N/A' }}</p>
+            </div>
+
+            <!-- Действия с продуктом -->
+            <div class="product-actions">
+                <div class="price">{{ $product->price }} €</div>
                 @auth
                     <form action="{{ route('cart.add', $product->id) }}" method="POST">
                         @csrf
-                        <input type="number" name="quantity" value="1" min="1" class="quantity">
-                        <button type="submit">🛒 Add to Cart</button>
+                        <div class="quantity-control">
+                            <button type="button" onclick="this.nextElementSibling.stepDown()">-</button>
+                            <input type="number" name="quantity" value="1" min="1" class="quantity">
+                            <button type="button" onclick="this.previousElementSibling.stepUp()">+</button>
+                        </div>
+                        <button type="submit" class="add-to-cart-btn">To the Cart</button>
                     </form>
                 @else
                     <p>Please <a href="{{ route('login.form') }}">log in</a> to add this product to your cart.</p>
                 @endauth
-                <a href="{{ route('main_page') }}">Back to Products</a>
             </div>
         </div>
+
+        <a href="{{ route('main_page') }}" class="back-link">Back to Products</a>
     </section>
 </main>
 
