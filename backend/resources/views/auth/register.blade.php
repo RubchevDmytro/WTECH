@@ -96,7 +96,7 @@
 </head>
 <body>
     <header>
-        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="logo-image">
+    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="logo-image">
     </header>
 
     <div class="container">
