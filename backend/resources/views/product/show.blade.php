@@ -200,7 +200,7 @@
             <!-- Действия с продуктом -->
             <div class="product-actions">
                 <div class="price">{{ $product->price }} €</div>
-                @auth
+{{--                @auth--}}
                     <form action="{{ route('cart.add', $product->id) }}" method="POST">
                         @csrf
                         <div class="quantity-control">
@@ -210,9 +210,9 @@
                         </div>
                         <button type="submit" class="add-to-cart-btn">Add To Cart</button>
                     </form>
-                @else
-                    <p>Please <a href="{{ route('login.form') }}">log in</a> to add this product to your cart.</p>
-                @endauth
+{{--                @else--}}
+{{--                    <p>Please <a href="{{ route('login.form') }}">log in</a> to add this product to your cart.</p>--}}
+{{--                @endauth--}}
             </div>
         </div>
 

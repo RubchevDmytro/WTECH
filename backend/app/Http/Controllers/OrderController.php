@@ -14,33 +14,57 @@ class OrderController extends Controller
 {
     public function confirm()
     {
-        $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
-        $totalPrice = $cartItems->sum(function ($item) {
-            return $item->quantity * $item->product->price;
-        });
+        if (Auth::check()) {
+            // Retrieve cart items with associated products
+            $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
+        } else {
+            // If user is not authenticated, get the cart from session
+            $cartItems = session()->get('cart', []);
+        }
+
+        $totalPrice = 0;
+        foreach ($cartItems as $item) {
+            // Check if 'product' exists and calculate total price
+            if (isset($item->product)) {
+                $totalPrice += $item->quantity * $item->product->price;
+            }
+        }
 
         return view('confirmation', compact('cartItems', 'totalPrice'));
     }
 
     public function create(Request $request)
     {
+        // Validate shipping address
         $request->validate([
             'shipping_address' => 'required|string|max:255',
         ]);
 
-        $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
+        // Get cart items based on authentication status
+        if (Auth::check()) {
+            $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
+        } else {
+            $cartItems = session()->get('cart', []);
+        }
 
-        if ($cartItems->isEmpty()) {
+        // Check if cart is empty
+        if (empty($cartItems)) {
             return redirect()->back()->with('error', 'Your cart is empty.');
         }
 
-        // Используем транзакцию для атомарности операций
         return DB::transaction(function () use ($request, $cartItems) {
-            // Загружаем продукты с блокировкой для предотвращения конкурентных изменений
-            $productIds = $cartItems->pluck('product_id')->toArray();
-            $products = Product::whereIn('id', $productIds)->lockForUpdate()->get()->keyBy('id');
 
-            // Проверяем наличие товара
+            if (!Auth::check()) {
+                // Handle guest cart by fetching product details
+                $productIds = array_keys($cartItems);
+                $products = Product::whereIn('id', $productIds)->lockForUpdate()->get()->keyBy('id');
+            } else {
+                // Handle authenticated user's cart
+                $productIds = $cartItems->pluck('product_id')->toArray();
+                $products = Product::whereIn('id', $productIds)->lockForUpdate()->get()->keyBy('id');
+            }
+
+            // Check product stock availability before proceeding
             foreach ($cartItems as $item) {
                 $product = $products[$item->product_id] ?? null;
                 if (!$product || $product->stock < $item->quantity) {
@@ -48,28 +72,27 @@ class OrderController extends Controller
                 }
             }
 
-            // Вычисляем общую стоимость
+            // Calculate total price
             $totalPrice = 0;
             foreach ($cartItems as $item) {
                 $totalPrice += $item->product->price * $item->quantity;
             }
 
-            // Логируем создание заказа
             \Log::info('Creating order', [
                 'user_id' => Auth::id(),
                 'total_price' => $totalPrice,
                 'shipping_address' => $request->shipping_address,
             ]);
 
-            // Создаём заказ
+            // Create the order
             $order = Order::create([
-                'user_id' => Auth::id(),
+                'user_id' => Auth::id() ?: null, // Handle guest orders
                 'date' => now(),
                 'shipping_address' => $request->shipping_address,
                 'total_price' => $totalPrice,
             ]);
 
-            // Создаём детали заказа и уменьшаем stock
+            // Create order details and update product stock
             foreach ($cartItems as $item) {
                 OrderDetail::create([
                     'order_id' => $order->id,
@@ -94,17 +117,22 @@ class OrderController extends Controller
                 ]);
             }
 
-            // Очищаем корзину
-            Cart::where('user_id', Auth::id())->delete();
+            // Clear the cart after order is placed
+            if (Auth::check()) {
+                Cart::where('user_id', Auth::id())->delete();
+            } else {
+                session()->forget('cart');
+            }
 
             \Log::info('Order created', ['order_id' => $order->id]);
 
             return redirect()->route('main_page')->with('success', 'Order placed successfully!');
-        }, 5); // 5 попыток для транзакции в случае deadlock
+        }, 5);
     }
 
     public function index()
     {
+        // Retrieve orders with their details and associated products
         $orders = Order::where('user_id', Auth::id())->with('orderDetails.product')->get();
         return view('orders.index', compact('orders'));
     }

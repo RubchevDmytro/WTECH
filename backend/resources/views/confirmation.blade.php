@@ -35,7 +35,7 @@
         </a>
     </section>
 
-    @if ($cartItems->isNotEmpty())
+    @if (count($cartItems) > 0)
         <section class="confirmation-form">
             <form action="{{ route('order.create') }}" method="POST">
                 @csrf
@@ -45,25 +45,26 @@
                 <h2>Delivery Address</h2>
                 <input type="text" placeholder="First Name">
                 <input type="text" placeholder="Last Name">
-                <input type="text" placeholder="Address" id="shipping_address" required>
+                <input type="text" placeholder="Address" id="shipping_address" name="shipping_address" required>
                 <input type="text" placeholder="City">
                 <input type="text" placeholder="Postcode">
                 <input type="text" placeholder="Country">
+
+
+                <h2>Payment</h2>
+                <input type="text" placeholder="Card Number">
+                <input type="text" placeholder="Name on Card">
+                <input type="text" placeholder="MM/YY">
+                <input type="text" placeholder="CVV">
+
+                <button type="submit" id="place-order" class="pay">Pay</button>
+
+                @endif
+
+                @if (session('error'))
+                    <div class="error">{{ session('error') }}</div>
+                @endif
             </form>
-
-            <h2>Payment</h2>
-            <input type="text" placeholder="Card Number">
-            <input type="text" placeholder="Name on Card">
-            <input type="text" placeholder="MM/YY">
-            <input type="text" placeholder="CVV">
-
-            <button type="submit" id="place-order" class = "pay" >Pay</button>
-
-            @endif
-
-            @if (session('error'))
-                <div class="error">{{ session('error') }}</div>
-            @endif
         </section>
 </main>
 

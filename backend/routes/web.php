@@ -1,52 +1,111 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProductImageController;
+namespace App\Http\Controllers;
 
+use App\Models\Cart;
+use App\Models\Order;
+use App\Models\OrderDetail;
+use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
+class OrderController extends Controller
+{
+    public function confirm()
+    {
+        $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
+        $totalPrice = $cartItems->sum(function ($item) {
+            return $item->quantity * $item->product->price;
+        });
 
-Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form');
-Route::post('/register', [AuthController::class, 'register'])->name('register');
+        return view('confirmation', compact('cartItems', 'totalPrice'));
+    }
 
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    public function create(Request $request)
+    {
+        $request->validate([
+            'shipping_address' => 'required|string|max:255',
+        ]);
 
-Route::get('/', [ProductController::class, 'index'])->name('main_page');
-//temperary
+        $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
 
-Route::get('/product/upload-image', [ProductImageController::class, 'showUploadForm'])->name('product.upload_image');
-Route::post('/product/upload-image', [ProductImageController::class, 'uploadImage'])->name('product.upload_image.store');
+        if ($cartItems->isEmpty()) {
+            return redirect()->back()->with('error', 'Your cart is empty.');
+        }
 
+        // Используем транзакцию для атомарности операций
+        return DB::transaction(function () use ($request, $cartItems) {
+            // Загружаем продукты с блокировкой для предотвращения конкурентных изменений
+            $productIds = $cartItems->pluck('product_id')->toArray();
+            $products = Product::whereIn('id', $productIds)->lockForUpdate()->get()->keyBy('id');
 
+            // Проверяем наличие товара
+            foreach ($cartItems as $item) {
+                $product = $products[$item->product_id] ?? null;
+                if (!$product || $product->stock < $item->quantity) {
+                    throw new \Exception("Not enough stock available for {$item->product->name}.");
+                }
+            }
 
-Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
+            // Вычисляем общую стоимость
+            $totalPrice = 0;
+            foreach ($cartItems as $item) {
+                $totalPrice += $item->product->price * $item->quantity;
+            }
 
+            // Логируем создание заказа
+            \Log::info('Creating order', [
+                'user_id' => Auth::id(),
+                'total_price' => $totalPrice,
+                'shipping_address' => $request->shipping_address,
+            ]);
 
-Route::get('/order/confirm', [OrderController::class, 'confirm'])->name('order.confirm');
-Route::post('/order/create', [OrderController::class, 'create'])->name('order.create');
+            // Создаём заказ
+            $order = Order::create([
+                'user_id' => Auth::id(),
+                'date' => now(),
+                'shipping_address' => $request->shipping_address,
+                'total_price' => $totalPrice,
+            ]);
 
-Route::get('/autocomplete', [ProductController::class, 'autocomplete'])->name('autocomplete');
+            // Создаём детали заказа и уменьшаем stock
+            foreach ($cartItems as $item) {
+                OrderDetail::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'price' => $item->product->price,
+                ]);
 
-Route::middleware('auth')->group(function () {
-    Route::get('/cart', [CartController::class, 'index'])->name('cart');
-    Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
-    Route::patch('/cart/update/{cart}', [CartController::class, 'update'])->name('cart.update');
-    Route::delete('/cart/remove/{cart}', [CartController::class, 'remove'])->name('cart.remove');
-    Route::post('/order/create', [OrderController::class, 'create'])->name('order.create');
+                $product = $products[$item->product_id];
+                \Log::info('Updating product stock', [
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'stock_before' => $product->stock,
+                ]);
 
+                $product->stock -= $item->quantity;
+                $product->save();
 
-    Route::middleware('admin')->group(function () {
-        Route::get('/admin', [AdminController::class, 'index'])->name('admin');
-        Route::get('/admin/admin_menu', [AdminController::class, 'index'])->name('admin.menu');
+                \Log::info('Product stock updated', [
+                    'product_id' => $item->product_id,
+                    'stock_after' => $product->stock,
+                ]);
+            }
 
-        Route::resource('categories', CategoryController::class);
-        Route::resource('products', ProductController::class)->except(['index']);
-        Route::get('/products', [ProductController::class, 'adminIndex'])->name('products.index');
-    });
+            // Очищаем корзину
+            Cart::where('user_id', Auth::id())->delete();
 
-});
+            \Log::info('Order created', ['order_id' => $order->id]);
+
+            return redirect()->route('main_page')->with('success', 'Order placed successfully!');
+        }, 5); // 5 попыток для транзакции в случае deadlock
+    }
+
+    public function index()
+    {
+        $orders = Order::where('user_id', Auth::id())->with('orderDetails.product')->get();
+        return view('orders.index', compact('orders'));
+    }
+}
