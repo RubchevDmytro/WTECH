@@ -159,39 +159,44 @@ public function index(Request $request)
     /**
      * Сохранить новый продукт в базе данных.
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'rating' => 'required|integer|min:1|max:5',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'subcategory_id' => 'required|exists:subcategories,id',
-        ]);
+     public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'price' => 'required|numeric|min:0',
+        'rating' => 'required|integer|min:1|max:5',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'subcategory_id' => 'required|exists:subcategories,id',
+    ]);
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public');
-        }
+    $product = Product::create([
+        'name' => $request->name,
+        'price' => $request->price,
+        'rating' => $request->rating,
+        'subcategory_id' => $request->subcategory_id,
+    ]);
 
-        $product = Product::create([
-            'name' => $request->name,
-            'price' => $request->price,
-            'rating' => $request->rating,
-            'image' => $imagePath,
-            'subcategory_id' => $request->subcategory_id,
-        ]);
+    // Если есть изображение, сохраняем его в таблице product_images
+    if ($request->hasFile('image')) {
+        $imageContent = base64_encode(file_get_contents($request->file('image')->getRealPath()));
+        $mimeType = $request->file('image')->getClientMimeType();
 
-        \Log::info('Product created', [
+        ProductImage::create([
             'product_id' => $product->id,
-            'name' => $product->name,
+            'image_data' => $imageContent,
+            'mime_type' => $mimeType,
+            'is_primary' => true, // Первое изображение становится основным
         ]);
-
-        return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
 
-    /**
-     * Показать форму для редактирования продукта.
+    \Log::info('Product created', [
+        'product_id' => $product->id,
+        'name' => $product->name,
+    ]);
+
+    return redirect()->route('products.index')->with('success', 'Product created successfully.');
+     }
+    /* Показать форму для редактирования продукта.
      */
     public function edit(Product $product)
     {
@@ -202,56 +207,62 @@ public function index(Request $request)
     /**
      * Обновить продукт в базе данных.
      */
-    public function update(Request $request, Product $product)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'rating' => 'required|integer|min:1|max:5',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'subcategory_id' => 'required|exists:subcategories,id',
-        ]);
+     public function update(Request $request, Product $product)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'price' => 'required|numeric|min:0',
+        'rating' => 'required|integer|min:1|max:5',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'subcategory_id' => 'required|exists:subcategories,id',
+    ]);
 
-        $imagePath = $product->image;
-        if ($request->hasFile('image')) {
-            if ($imagePath) {
-                Storage::disk('public')->delete($imagePath);
-            }
-            $imagePath = $request->file('image')->store('products', 'public');
-        }
+    $product->update([
+        'name' => $request->name,
+        'price' => $request->price,
+        'rating' => $request->rating,
+        'subcategory_id' => $request->subcategory_id,
+    ]);
 
-        $product->update([
-            'name' => $request->name,
-            'price' => $request->price,
-            'rating' => $request->rating,
-            'image' => $imagePath,
-            'subcategory_id' => $request->subcategory_id,
-        ]);
+    // Если загружено новое изображение, добавляем его в таблицу product_images
+    if ($request->hasFile('image')) {
+        $imageContent = base64_encode(file_get_contents($request->file('image')->getRealPath()));
+        $mimeType = $request->file('image')->getClientMimeType();
 
-        \Log::info('Product updated', [
+        // Делаем новое изображение основным, сбрасываем флаг у старых
+        $product->images()->update(['is_primary' => false]);
+
+        ProductImage::create([
             'product_id' => $product->id,
-            'name' => $product->name,
+            'image_data' => $imageContent,
+            'mime_type' => $mimeType,
+            'is_primary' => true,
         ]);
-
-        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
     }
 
+    \Log::info('Product updated', [
+        'product_id' => $product->id,
+        'name' => $product->name,
+    ]);
+
+    return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+     }
+    
+    
     /**
-     * Удалить продукт из базы данных.
+         * Удалить продукт из базы данных.
      */
-    public function destroy(Product $product)
-    {
-        if ($product->image) {
-            Storage::disk('public')->delete($product->image);
-        }
 
-        $product->delete();
 
-        \Log::info('Product deleted', [
-            'product_id' => $product->id,
-            'name' => $product->name,
-        ]);
+public function destroy(Product $product)
+{
+    // Изображения удалятся автоматически благодаря onDelete('cascade') в миграции
+    $product->delete();
 
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
-    }
-}
+    \Log::info('Product deleted', [
+        'product_id' => $product->id,
+        'name' => $product->name,
+    ]);
+
+    return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
+}}
