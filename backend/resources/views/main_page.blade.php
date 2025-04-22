@@ -12,23 +12,24 @@
         <div class="menu-icon">☰</div>
         <a href="{{ route('main_page') }}" class="logo">🏠</a>
         <form method="GET" action="{{ route('main_page') }}" class="search-form">
-    <div class="autocomplete-wrapper">
-        <input type="text" placeholder="Search..." name="search" id="search-input" value="{{ request()->query('search') }}" autocomplete="off">
-        <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
-    </div>
-    <button type="submit" class="search-btn">🔍</button>
-</form>
-@auth
-    <div>
-        Logged in as: {{ Auth::user()->email }} (is_admin: {{ Auth::user()->is_admin ? 'true' : 'false' }})
-    </div>
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
-        @csrf
-        <button type="submit" class="login">Log Out</button>
-    </form>
-@else
-    <a href="{{ route('login.form') }}" class="login">Log In</a>
-@endauth<a href="{{ route('cart') }}" class="cart-btn">🛒</a>
+            <div class="autocomplete-wrapper">
+                <input type="text" placeholder="Search..." name="search" id="search-input" value="{{ request()->query('search') }}" autocomplete="off">
+                <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
+            </div>
+            <button type="submit" class="search-btn">🔍</button>
+        </form>
+        @auth
+            <div>
+                Logged in as: {{ Auth::user()->email }} (is_admin: {{ Auth::user()->is_admin ? 'true' : 'false' }})
+            </div>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
+                @csrf
+                <button type="submit" class="login">Log Out</button>
+            </form>
+        @else
+            <a href="{{ route('login.form') }}" class="login">Log In</a>
+        @endauth
+        <a href="{{ route('cart') }}" class="cart-btn">🛒</a>
     </div>
 </header>
 
@@ -65,7 +66,7 @@
             <div class="error">{{ session('error') }}</div>
         @endif
 
-        <div class="filter-bar">
+         <div class="filter-bar">
             <form method="GET" action="{{ route('main_page') }}">
                 <label>Filtrovať podľa:</label>
                 <select name="sort">
@@ -92,13 +93,14 @@
 
                     </div>
             </form>
-        </div>
-        <h2 style="margin-top:60px;">Zoznam produktov</h2>
+        </div></div><h2 style="margin-top:60px;">Zoznam produktov</h2>
         <div class="product-list">
             @forelse($products as $product)
                 <div class="product">
                     <a href="{{ route('product.show', $product->id) }}">
-                        <img src="{{ asset('images/' . ($product->image ?? 'box.png')) }}" alt="{{ $product->name }}">
+                        @if($product->primary_image)
+                            <img src="data:{{ $product->primary_image->mime_type }};base64,{{ $product->primary_image->image_data }}" alt="{{ $product->name }}">
+                        @endif
                     </a>
                     <h3>{{ $product->name }}</h3>
                     <p>{{ str_repeat('⭐', $product->rating) . str_repeat('☆', 5 - $product->rating) }}</p>
@@ -113,11 +115,10 @@
                 <p>Žiadne produkty nenájdené.</p>
             @endforelse
         </div>
-    <div class="pagination" id="pagination">
-    {{ $products->appends(request()->query())->links('vendor.pagination.custom') }}
-</div>
-
-</section>
+        <div class="pagination" id="pagination">
+            {{ $products->appends(request()->query())->links('vendor.pagination.custom') }}
+        </div>
+    </section>
 </main>
 <footer>
     <p>© 2025 Store | Follow us on social media | About us</p>

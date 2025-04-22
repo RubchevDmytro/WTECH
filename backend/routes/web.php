@@ -5,6 +5,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductImageController;
+
+
 
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
@@ -14,6 +17,13 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/', [ProductController::class, 'index'])->name('main_page');
+//temperary
+
+Route::get('/product/upload-image', [ProductImageController::class, 'showUploadForm'])->name('product.upload_image');
+Route::post('/product/upload-image', [ProductImageController::class, 'uploadImage'])->name('product.upload_image.store');
+
+
+
 Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
 
 
