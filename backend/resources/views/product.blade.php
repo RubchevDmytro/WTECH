@@ -42,15 +42,13 @@
         <h2 style="margin-top:60px;">Product Details</h2>
         <div class="product-list">
             <div class="product">
-                @if ($product->image)
-                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
-                @else
-                    <img src="{{ asset('images/box.png') }}" alt="Default Product Image">
+                @if ($product->primary_image)
+                    <img src="data:{{ $product->primary_image->mime_type }};base64,{{ $product->primary_image->image_data }}" alt="{{ $product->name }}">
                 @endif
                 <h3>{{ $product->name }}</h3>
                 <p>{{ str_repeat('⭐', $product->rating) . str_repeat('☆', 5 - $product->rating) }}</p>
                 <p>{{ $product->price }} €</p>
-                <p>Stock: {{ $product->left_stock ?? 0 }}</p>
+                <p>Stock: {{ $product->stock ?? 0 }}</p>
                 <p>Category: {{ $product->subcategory ? ($product->subcategory->category ? $product->subcategory->category->name : 'N/A') : 'N/A' }}</p>
                 <p>Subcategory: {{ $product->subcategory ? $product->subcategory->name : 'N/A' }}</p>
                 @auth
@@ -75,4 +73,3 @@
 <script src="{{ asset('js/main_page.js') }}"></script>
 </body>
 </html>
-

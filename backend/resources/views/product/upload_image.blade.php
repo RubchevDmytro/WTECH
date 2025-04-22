@@ -28,11 +28,19 @@
         }
 
         .form-group select,
-        .form-group input[type="file"] {
+        .form-group input[type="file"],
+        .form-group input[type="checkbox"] {
             width: 100%;
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 5px;
+        }
+
+        .form-group .checkbox-label {
+            display: inline-flex;
+            align-items: center;
+            font-weight: normal;
+            gap: 8px;
         }
 
         .form-group button {
@@ -123,6 +131,13 @@
             <div class="form-group">
                 <label for="image">Upload Image</label>
                 <input type="file" name="image" id="image" accept="image/*" required>
+            </div>
+
+            <div class="form-group">
+                <label for="is_primary" class="checkbox-label">
+                    <input type="checkbox" name="is_primary" id="is_primary" value="1">
+                    Set as primary image
+                </label>
             </div>
 
             <div class="form-group">

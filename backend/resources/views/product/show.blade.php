@@ -167,18 +167,14 @@
             <!-- Изображения продукта -->
             <div class="product-images">
                 <div class="main-image">
-                    @if ($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
-                    @else
-                        <img src="{{ asset('images/box.png') }}" alt="Default Product Image">
+                    @if ($product->primary_image)
+                        <img src="data:{{ $product->primary_image->mime_type }};base64,{{ $product->primary_image->image_data }}" alt="{{ $product->name }}">
                     @endif
                 </div>
                 <div class="thumbnail-images">
-                    <!-- Добавляем заглушки для дополнительных изображений -->
-                    <img src="{{ asset('images/box.png') }}" alt="Thumbnail 1">
-                    <img src="{{ asset('images/box.png') }}" alt="Thumbnail 2">
-                    <img src="{{ asset('images/box.png') }}" alt="Thumbnail 3">
-                    <img src="{{ asset('images/box.png') }}" alt="Thumbnail 4">
+                    @foreach ($product->images as $image)
+                        <img src="data:{{ $image->mime_type }};base64,{{ $image->image_data }}" alt="Thumbnail" onclick="document.querySelector('.main-image img').src=this.src">
+                    @endforeach
                 </div>
             </div>
 
