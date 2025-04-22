@@ -1,0 +1,123 @@
+
+header {
+    margin-top: 10px;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: sticky;
+}
+.logo-image{
+    width: 75px;
+    height: 100%;
+    horiz-align: left;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    color: #333;
+    padding: 0 20px;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* ORDER SECTION */
+.confirmation-form {
+    width: 45%;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.confirmation-form h2 {
+    margin-bottom: 15px;
+}
+.name {
+    flex-grow: 1;
+    font-weight: bold;
+}
+
+.count, .price {
+    margin-left: 10px;
+}
+
+.total {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.container input {
+    display: block;
+    width: 80%;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+.buttons {
+    margin-top: 15px;
+}
+
+button {
+    background: #800000;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+button:hover {
+    background: #a00000;
+}
+
+/* ERROR MESSAGE */
+.error {
+    color: red;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+
+.cart-review {
+    width: 50%;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.product {
+    display: flex;
+    align-items: center;
+    background: #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 2px solid #800000;
+}
+
+.product_image {
+    width: 80px;
+    height: 80px;
+    margin-right: 15px;
+}
+.pay {
+    width: 100%;
+    padding: 10px;
+    background: #800000;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}

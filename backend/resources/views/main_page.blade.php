@@ -12,23 +12,24 @@
         <div class="menu-icon">☰</div>
         <a href="{{ route('main_page') }}" class="logo">🏠</a>
         <form method="GET" action="{{ route('main_page') }}" class="search-form">
-    <div class="autocomplete-wrapper">
-        <input type="text" placeholder="Search..." name="search" id="search-input" value="{{ request()->query('search') }}" autocomplete="off">
-        <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
-    </div>
-    <button type="submit" class="search-btn">🔍</button>
-</form>
-@auth
-    <div>
-        Logged in as: {{ Auth::user()->email }} (is_admin: {{ Auth::user()->is_admin ? 'true' : 'false' }})
-    </div>
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
-        @csrf
-        <button type="submit" class="login">Log Out</button>
-    </form>
-@else
-    <a href="{{ route('login.form') }}" class="login">Log In</a>
-@endauth<a href="{{ route('cart') }}" class="cart-btn">🛒</a>
+            <div class="autocomplete-wrapper">
+                <input type="text" placeholder="Search..." name="search" id="search-input"
+                       value="{{ request()->query('search') }}" autocomplete="off">
+                <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
+            </div>
+            <button type="submit" class="search-btn">🔍</button>
+        </form>
+        @auth
+            <div>
+                Logged in as: {{ Auth::user()->email }} (is_admin: {{ Auth::user()->is_admin ? 'true' : 'false' }})
+            </div>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
+                @csrf
+                <button type="submit" class="login">Log Out</button>
+            </form>
+        @else
+            <a href="{{ route('login.form') }}" class="login">Log In</a>
+        @endauth<a href="{{ route('cart') }}" class="cart-btn">🛒</a>
     </div>
 </header>
 
@@ -57,7 +58,7 @@
         </ul>
     </aside>
 
-    <section class="products">
+    <div class="products">
         @if(session('success'))
             <div class="success">{{ session('success') }}</div>
         @endif
@@ -69,17 +70,26 @@
             <form method="GET" action="{{ route('main_page') }}">
                 <label>Filtrovať podľa:</label>
                 <select name="sort">
-                    <option value="price_asc" {{ request()->query('sort') == 'price_asc' ? 'selected' : '' }}>Rastúca cena</option>
-                    <option value="price_desc" {{ request()->query('sort') == 'price_desc' ? 'selected' : '' }}>Klesajúca cena</option>
-                    <option value="rating" {{ request()->query('sort') == 'rating' ? 'selected' : '' }}>Hodnotenie</option>
+                    <option value="price_asc" {{ request()->query('sort') == 'price_asc' ? 'selected' : '' }}>Rastúca
+                        cena
+                    </option>
+                    <option value="price_desc" {{ request()->query('sort') == 'price_desc' ? 'selected' : '' }}>
+                        Klesajúca cena
+                    </option>
+                    <option value="rating" {{ request()->query('sort') == 'rating' ? 'selected' : '' }}>Hodnotenie
+                    </option>
                 </select>
                 <label>Cena:</label>
                 <div class="slider-container" data-min="{{ $minPrice }}" data-max="{{ $maxPrice }}">
                     <div class="inputs">
                         <span>from</span>
-                        <input type="text" id="min-price" name="min_price" value="{{ number_format((float) str_replace(',', '.', request()->query('min_price', $minPrice)), 2, ',', '') }}" data-min="{{ $minPrice }}" data-max="{{ $maxPrice }}">
+                        <input type="text" id="min-price" name="min_price"
+                               value="{{ number_format((float) str_replace(',', '.', request()->query('min_price', $minPrice)), 2, ',', '') }}"
+                               data-min="{{ $minPrice }}" data-max="{{ $maxPrice }}">
                         <span>to</span>
-                        <input type="text" id="max-price" name="max_price" value="{{ number_format((float) str_replace(',', '.', request()->query('max_price', $maxPrice)), 2, ',', '') }}" data-min="{{ $minPrice }}" data-max="{{ $maxPrice }}">
+                        <input type="text" id="max-price" name="max_price"
+                               value="{{ number_format((float) str_replace(',', '.', request()->query('max_price', $maxPrice)), 2, ',', '') }}"
+                               data-min="{{ $minPrice }}" data-max="{{ $maxPrice }}">
                     </div>
                     <div class="slider-wrapper">
                         <div class="slider" id="slider">
@@ -87,10 +97,11 @@
                             <div class="thumb" id="min-thumb"></div>
                             <div class="thumb" id="max-thumb"></div>
                         </div>
-                                        </div></div><button type="submit">OK</button>
-
-
                     </div>
+                </div>
+                <button type="submit">OK</button>
+
+
             </form>
         </div>
         <h2 style="margin-top:60px;">Zoznam produktov</h2>
@@ -113,11 +124,11 @@
                 <p>Žiadne produkty nenájdené.</p>
             @endforelse
         </div>
-    <div class="pagination" id="pagination">
-    {{ $products->appends(request()->query())->links('vendor.pagination.custom') }}
-</div>
+        <div class="pagination" id="pagination">
+            {{ $products->appends(request()->query())->links('vendor.pagination.custom') }}
+        </div>
 
-</section>
+        </div>
 </main>
 <footer>
     <p>© 2025 Store | Follow us on social media | About us</p>

@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $fillable = ['category_id', 'name', 'description', 'stock', 'price', 'rating'];
+    protected $fillable = ['subcategory_id', 'name', 'description', 'stock', 'price', 'rating'];
     public $timestamps = false;
 
 
@@ -25,5 +25,15 @@ class Product extends Model
             ];
         }
         return null;
+    }
+
+    public function subcategory()
+    {
+        return $this->belongsTo(Subcategory::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

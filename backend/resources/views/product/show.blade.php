@@ -6,6 +6,7 @@
     <title>{{ $product->name }}</title>
     <link rel="stylesheet" href="{{ asset('css/main_page.css') }}">
     <style>
+
         .product-details {
             display: flex;
             justify-content: space-between;
@@ -14,6 +15,8 @@
             padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
+            background: #e8e1e1;
+            border-radius: 30px;
         }
 
         .product-images {
@@ -70,7 +73,7 @@
 
         .product-actions {
             flex: 1;
-            background-color: #f0f0f0;
+            background: #d5cbcb;
             padding: 20px;
             border-radius: 10px;
             display: flex;
@@ -127,6 +130,7 @@
             margin-top: 20px;
             text-align: center;
         }
+
     </style>
 </head>
 <body>
@@ -162,7 +166,7 @@
             <div class="error">{{ session('error') }}</div>
         @endif
 
-        <h2 style="margin-top:60px; text-align: center;">Product Details</h2>
+        {{--        <h2 style="margin-top:60px; text-align: center;">Product Details</h2>--}}
         <div class="product-details">
             <!-- Изображения продукта -->
             <div class="product-images">
@@ -188,10 +192,15 @@
                 <p class="rating">{{ str_repeat('⭐', $product->rating) . str_repeat('☆', 5 - $product->rating) }}</p>
                 <p><strong>Description:</strong> {{ $product->description ?? 'No description available.' }}</p>
                 <p><strong>Stock:</strong> {{ $product->stock ?? 0 }}</p>
-                <p><strong>Category:</strong> {{ $product->subcategory ? ($product->subcategory->category ? $product->subcategory->category->name : 'N/A') : 'N/A' }}</p>
-                <p><strong>Subcategory:</strong> {{ $product->subcategory ? $product->subcategory->name : 'N/A' }}</p>
+                <p>
+{{--                    <strong>Category:</strong> {{ $product->subcategory ? ($product->subcategory->category ? $product->subcategory->category->name : 'N/A') : 'N/A' }}--}}
+                    <strong>Category:</strong> {{ $product->subcategory ? ($product->subcategory->category ? $product->subcategory->category->name : 'N/A') : 'N/A' }}
+                </p>
+                <p>
+{{--                    <strong>Subcategory:</strong> {{ $product->subcategory ? $product->subcategory->name : 'N/A' }}--}}
+                    <strong>Subcategory:</strong> {{ $product->category ? $product->category->name : 'N/A' }}
+                </p>
             </div>
-
             <!-- Действия с продуктом -->
             <div class="product-actions">
                 <div class="price">{{ $product->price }} €</div>
@@ -203,13 +212,14 @@
                             <input type="number" name="quantity" value="1" min="1" class="quantity">
                             <button type="button" onclick="this.previousElementSibling.stepUp()">+</button>
                         </div>
-                        <button type="submit" class="add-to-cart-btn">To the Cart</button>
+                        <button type="submit" class="add-to-cart-btn">Add To Cart</button>
                     </form>
                 @else
                     <p>Please <a href="{{ route('login.form') }}">log in</a> to add this product to your cart.</p>
                 @endauth
             </div>
         </div>
+
 
         <a href="{{ route('main_page') }}" class="back-link">Back to Products</a>
     </section>
