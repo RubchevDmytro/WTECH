@@ -20,8 +20,9 @@
         <h2>Confirm Your Order</h2>
         @forelse ($cartItems as $item)
             <article class="product" data-price="{{ $item->product->price }}">
-                <img class="product_image" src="{{ asset('images/' . ($item->product->image ?? 'box.png')) }}"
-                     alt="{{ $item->product->name }}">
+                @if ($item->product->primary_image)
+                    <img class="product_image" src="data:{{ $item->product->primary_image->mime_type }};base64,{{ $item->product->primary_image->image_data }}" alt="{{ $item->product->name }}">
+                @endif
                 <span class="name">{{ $item->product->name }}</span>
                 <span class="count">{{ $item->quantity }}</span>
                 <span class="price">${{ $item->product->price * $item->quantity }}</span>
@@ -39,9 +40,6 @@
         <section class="confirmation-form">
             <form action="{{ route('order.create') }}" method="POST">
                 @csrf
-                {{--                    <label for="shipping_address">Shipping Address:</label>--}}
-                {{--                    <input type="text" id="shipping_address" name="shipping_address" required>--}}
-
                 <h2>Delivery Address</h2>
                 <input type="text" placeholder="First Name">
                 <input type="text" placeholder="Last Name">
@@ -50,7 +48,6 @@
                 <input type="text" placeholder="Postcode">
                 <input type="text" placeholder="Country">
 
-
                 <h2>Payment</h2>
                 <input type="text" placeholder="Card Number">
                 <input type="text" placeholder="Name on Card">
@@ -58,14 +55,13 @@
                 <input type="text" placeholder="CVV">
 
                 <button type="submit" id="place-order" class="pay">Pay</button>
-
-                @endif
-
-                @if (session('error'))
-                    <div class="error">{{ session('error') }}</div>
-                @endif
             </form>
+
+            @if (session('error'))
+                <div class="error">{{ session('error') }}</div>
+            @endif
         </section>
+    @endif
 </main>
 
 <script>
@@ -73,10 +69,10 @@
         let total = 0;
         document.querySelectorAll('.product').forEach(product => {
             let count = parseInt(product.querySelector('.count').textContent);
-            let price = parseInt(product.dataset.price);
+            let price = parseFloat(product.dataset.price);
             total += count * price;
         });
-        document.getElementById('total-price').textContent = total;
+        document.getElementById('total-price').textContent = total.toFixed(2);
     }
 
     updateTotal();

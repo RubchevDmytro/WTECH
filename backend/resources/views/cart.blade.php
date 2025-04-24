@@ -125,7 +125,9 @@
     <section id="cart">
         @forelse ($cartItems as $item)
             <article class="product" data-price="{{ $item->product->price }}">
-                <img class="product_image" src="{{ asset('images/' . ($item->product->image ?? 'box.png')) }}" alt="{{ $item->product->name }}">
+                @if ($item->product->primary_image)
+                    <img class="product_image" src="data:{{ $item->product->primary_image->mime_type }};base64,{{ $item->product->primary_image->image_data }}" alt="{{ $item->product->name }}">
+                @endif
                 <span class="name">{{ $item->product->name }}</span>
                 <div class="controls">
                     <form action="{{ route('cart.update', $item->id) }}" method="POST" style="display: inline;">
@@ -168,10 +170,10 @@
         let total = 0;
         document.querySelectorAll('.product').forEach(product => {
             let count = parseInt(product.querySelector('.count').textContent);
-            let price = parseInt(product.dataset.price);
+            let price = parseFloat(product.dataset.price);
             total += count * price;
         });
-        document.getElementById('total-price').textContent = total;
+        document.getElementById('total-price').textContent = total.toFixed(2);
     }
 
     updateTotal();
