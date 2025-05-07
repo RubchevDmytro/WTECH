@@ -88,7 +88,12 @@ button:hover {
     margin-top: 15px;
     font-weight: bold;
 }
-
+.product-image {
+    width: 100px; /* Фиксированная ширина */
+    height: 100px; /* Фиксированная высота */
+    object-fit: cover; /* Обрезает изображение, чтобы оно заполнило область без искажений */
+    object-position: center; /* Центрирует изображение внутри области */
+}
 
 .cart-review {
     width: 50%;

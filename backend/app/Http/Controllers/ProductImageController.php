@@ -14,7 +14,7 @@ class ProductImageController extends Controller
         return view('product.upload_image', compact('products'));
     }
 
-public function uploadImage(Request $request)
+    public function uploadImage(Request $request)
 {
     $request->validate([
         'product_id' => 'required|exists:products,id',
@@ -51,7 +51,15 @@ public function uploadImage(Request $request)
             ->with('error', 'Failed to upload image: ' . $e->getMessage());
     }
 }
-
+static public function create(array $data)
+    {
+        return ProductImage::create([
+            'product_id' => $data['product_id'],
+            'image_data' => $data['image_data'],
+            'mime_type' => $data['mime_type'],
+            'is_primary' => $data['is_primary'],
+        ]);
+    }
 
 
 }

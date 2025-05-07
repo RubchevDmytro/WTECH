@@ -31,5 +31,7 @@ protected $routeMiddleware = [
     'auth' => \App\Http\Middleware\Authenticate::class,
     'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
     'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
-    'admin' => \App\Http\Middleware\Admin::class, // Добавьте эту строку
-];}
+    'adminAccess' => \App\Http\Middleware\AdminMiddleware::class, // Убедитесь, что путь к классу верный
+
+];
+}

@@ -30,13 +30,8 @@ public function index(Request $request)
         $categories = collect();
     }
 
-    $minPrice = Cache::remember('products_min_price', 3600, function () {
-        return Product::min('price') ?? 0;
-    });
-    $maxPrice = Cache::remember('products_max_price', 3600, function () {
-        return Product::max('price') ?? 1000;
-    });
-
+$minPrice = Product::min('price') ?? 0;
+$maxPrice = Product::max('price') ?? 1000;
     $products = Product::query();
 
     if ($request->has('category')) {
@@ -170,6 +165,9 @@ public function index(Request $request)
     ]);
 
     $product = Product::create([
+        'description'=> 'sadasda',
+        'category_id' => 1,
+        'stock'=>10,
         'name' => $request->name,
         'price' => $request->price,
         'rating' => $request->rating,
@@ -181,18 +179,13 @@ public function index(Request $request)
         $imageContent = base64_encode(file_get_contents($request->file('image')->getRealPath()));
         $mimeType = $request->file('image')->getClientMimeType();
 
-        ProductImage::create([
+        ProductImageController::create([
             'product_id' => $product->id,
             'image_data' => $imageContent,
             'mime_type' => $mimeType,
             'is_primary' => true, // Первое изображение становится основным
         ]);
     }
-
-    \Log::info('Product created', [
-        'product_id' => $product->id,
-        'name' => $product->name,
-    ]);
 
     return redirect()->route('products.index')->with('success', 'Product created successfully.');
      }
@@ -266,3 +259,4 @@ public function destroy(Product $product)
 
     return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
 }}
+
