@@ -25,6 +25,10 @@ protected $fillable = [
     'password',
     'is_admin',
 ];
+         public function isAdmin()
+    {
+         return $this->is_admin; // Предполагаем булево поле is_admin
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

@@ -64,24 +64,17 @@ public function login(Request $request)
             'password' => 'required',
         ]);
 
-        \Log::info('Attempting login', [
-            'email' => $request->email,
-        ]);
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            \Log::info('User logged in', [
-                'email' => $request->email,
-                'is_admin' => Auth::user()->is_admin,
-            ]);
 
             // Перенаправляем в админ-меню только если пользователь — админ
-            if (Auth::user()->is_admin) {
-                return redirect()->route('admin.menu');
-            }
+        if ( Auth::user()->is_admin) {
+             return redirect('/admin/admin_menu');
+        }
+        return redirect('/');
 
-            return redirect()->route('main_page');
         }
 
         return back()->withErrors(['email' => 'Invalid credentials']);
