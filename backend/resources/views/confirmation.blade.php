@@ -19,12 +19,12 @@
     <section class="cart-review">
         <h2>Confirm Your Order</h2>
         @forelse ($cartItems as $item)
-            <article class="product" data-price="{{ $item->product->price }}">
-                <img class="product_image" src="{{ asset('images/' . ($item->product->image ?? 'box.png')) }}"
-                     alt="{{ $item->product->name }}">
-                <span class="name">{{ $item->product->name }}</span>
-                <span class="count">{{ $item->quantity }}</span>
-                <span class="price">${{ $item->product->price * $item->quantity }}</span>
+            <article class="product" data-price="{{ $item['price'] }}">
+                <img class="product_image" src="{{ asset('images/' . ($item['image'] ?? 'box.png')) }}"
+                     alt="{{ $item['name'] }}">
+                <span class="name">{{ $item['name'] }}</span>
+                <span class="count">{{ $item['quantity'] }}</span>
+                <span class="price">${{ $item['price'] * $item['quantity'] }}</span>
             </article>
         @empty
             <p>Your cart is empty.</p>

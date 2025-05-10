@@ -14,21 +14,36 @@ class OrderController extends Controller
 {
     public function confirm()
     {
-        if (Auth::check()) {
-            // Retrieve cart items with associated products
-            $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
+        if (auth()->check()) {
+            $userId = auth()->id();
+            $cartItems = Cart::with('product')->where('user_id', $userId)->get()->map(function ($item) {
+                return [
+                    'name' => $item->product->name,
+                    'price' => $item->product->price,
+                    'image' => $item->product->image,
+                    'quantity' => $item->quantity,
+                ];
+            });
         } else {
-            // If user is not authenticated, get the cart from session
-            $cartItems = session()->get('cart', []);
-        }
+            $sessionCart = session('cart', []);
+            $cartItems = [];
 
-        $totalPrice = 0;
-        foreach ($cartItems as $item) {
-            // Check if 'product' exists and calculate total price
-            if (isset($item->product)) {
-                $totalPrice += $item->quantity * $item->product->price;
+            foreach ($sessionCart as $item) {
+                $product = \App\Models\Product::find($item['product_id']);
+                if ($product) {
+                    $cartItems[] = [
+                        'name' => $product->name,
+                        'price' => $product->price,
+                        'image' => $product->image,
+                        'quantity' => $item['quantity'],
+                    ];
+                }
             }
         }
+
+        $totalPrice = collect($cartItems)->sum(function ($item) {
+            return $item['price'] * $item['quantity'];
+        });
 
         return view('confirmation', compact('cartItems', 'totalPrice'));
     }
