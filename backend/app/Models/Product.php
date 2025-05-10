@@ -9,10 +9,16 @@ class Product extends Model
     public $timestamps = false;
 
 
-    public function images()
+public function images()
     {
         return $this->hasMany(ProductImage::class);
+}
+
+public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
+
 public function getPrimaryImageAttribute()
 {
     return $this->images()->where('is_primary', true)->first();
