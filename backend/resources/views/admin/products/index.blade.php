@@ -68,8 +68,8 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="pagination">
-                {{ $products->links('vendor.pagination.default') }}
+            <div class="pagination" id="pagination">
+                {{ $products->appends(request()->query())->links('vendor.pagination.custom') }}
             </div>
         @else
             <p>No products found.</p>
