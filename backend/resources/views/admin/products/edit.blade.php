@@ -48,17 +48,13 @@
                 <input type="number" name="rating" id="rating" min="1" max="5" value="{{ old('rating', $product->rating) }}" required>
             </div>
             <div class="form-group">
-                <label for="subcategory_id">Subcategory:</label>
-                <select name="subcategory_id" id="subcategory_id" required>
-                    <option value="">Select a subcategory</option>
+                <label for="category_id">Category:</label>
+                <select name="category_id" id="category_id" required>
+                    <option value="">Select a category</option>
                     @foreach($categories as $category)
-                        <optgroup label="{{ $category->name }}">
-                            @foreach($category->subcategories as $subcategory)
-                                <option value="{{ $subcategory->id }}" {{ old('subcategory_id', $product->subcategory_id) == $subcategory->id ? 'selected' : '' }}>
-                                    {{ $subcategory->name }}
-                                </option>
-                            @endforeach
-                        </optgroup>
+                        <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
                     @endforeach
                 </select>
             </div>

@@ -37,7 +37,7 @@
                         <th>Price</th>
                         <th>Rating</th>
                         <th>Image</th>
-                        <th>Subcategory</th>
+                        <th>Category</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -49,13 +49,13 @@
                             <td>{{ $product->price }} €</td>
                             <td>{{ str_repeat('⭐', $product->rating) . str_repeat('☆', 5 - $product->rating) }}</td>
                             <td>
-                                @if($product->image)
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" style="max-width: 100px;">
-                                @else
-                                    No image
-                                @endif
+                                <a href="{{ route('product.show', $product->id) }}">
+                                    @if($product->primary_image)
+                                        <img src="data:{{ $product->primary_image->mime_type }};base64,{{ $product->primary_image->image_data }}" alt="{{ $product->name }}">
+                                    @endif
+                                </a>
                             </td>
-                            <td>{{ $product->subcategory->name ?? 'N/A' }}</td>
+                            <td>{{ $product->category->name ?? 'N/A' }}</td>
                             <td>
                                 <a href="{{ route('products.edit', $product) }}" class="btn">Edit</a>
                                 <form action="{{ route('products.destroy', $product) }}" method="POST" style="display: inline;">

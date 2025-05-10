@@ -306,7 +306,10 @@ input[type="number"] {
 .category-list li a:hover {
     text-decoration: underline;
 }
-
+.title{
+    margin-top:60px;
+    padding-top: 35px;
+}
 /* Контейнер для товаров */
 .products {
     padding: 20px;
@@ -489,7 +492,7 @@ footer {
 
 /*    .filter-bar {
         position: fixed;
-        top: 60px; 
+        top: 60px;
         width: 100%;
         left: 0;
         transform: none;
@@ -499,7 +502,7 @@ footer {
 */
     .products {
         padding: 15px;
-        padding-top:0px; 
+        padding-top:0px;
         max-width: 100%;
         box-sizing: border-box;
         margin-top: 70px; /* Учитываем высоту фильтр-бара */
@@ -518,10 +521,6 @@ footer {
     .filter-bar input {
         margin-right: 5px;
         font-size: 12px;
-    }
-
-    .filter-bar button {
-        width: 30%;
     }
 
     .slider-container {
@@ -587,7 +586,7 @@ footer {
 
     /*.filter-bar {
         position: fixed;
-        top: 35px; 
+        top: 35px;
         width: 100%;
         left: 0;
         transform: none;
@@ -605,6 +604,28 @@ footer {
         z-index: 998;
     }
 */
+    .filter-bar {
+        position: absolute;
+        width: 80%;
+        left: 50%;
+        transform: translateX(-50%);
+        height: auto;
+
+        background: #800000;
+        border-radius: 15px;
+        color: white;
+
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        overflow-x: auto;
+        white-space: normal;
+
+        z-index: 1;
+    }
     .inputs {
         flex-direction: row;
         align-items: center;
@@ -635,7 +656,7 @@ footer {
     .products {
         margin-top: 70px; /* Учитываем высоту фильтр-бара на маленьких экранах */
         padding: 15px;
-        padding-top:0px;
+        padding-top: 0px;
         width: 100%;
         box-sizing: border-box;
     }

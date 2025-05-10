@@ -20,7 +20,7 @@
         </form>
         @auth
             <div>
-                {{ Auth::user()->name }} 
+                {{ Auth::user()->name }}
             </div>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
                 @csrf
@@ -88,12 +88,15 @@
                             <div class="thumb" id="min-thumb"></div>
                             <div class="thumb" id="max-thumb"></div>
                         </div>
-                                        </div></div><button type="submit">OK</button>
-
-
                     </div>
+                </div>
+                <button type="submit">OK</button>
+
             </form>
-        </div></div><h2 style="margin-top:60px;">Zoznam produktov</h2>
+        </div>
+            <div class = "title">
+            <h2>Zoznam produktov</h2>
+            </div>
         <div class="product-list">
             @forelse($products as $product)
                 <div class="product">

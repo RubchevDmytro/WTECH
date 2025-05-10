@@ -21,14 +21,14 @@ public function index(Request $request)
         'is_admin' => Auth::check() ? Auth::user()->is_admin : 'not logged in',
     ]);
 
-    try {
-        $categories = Category::with('subcategories')->get();
-    } catch (\Exception $e) {
-        \Log::error('Failed to load categories', [
-            'error' => $e->getMessage(),
-        ]);
-        $categories = collect();
-    }
+        try {
+            $categories = Category::all();
+        } catch (\Exception $e) {
+            \Log::error('Failed to load categories', [
+                'error' => $e->getMessage(),
+            ]);
+            $categories = collect();
+        }
 
 $minPrice = Product::min('price') ?? 0;
 $maxPrice = Product::max('price') ?? 1000;
@@ -110,14 +110,9 @@ $maxPrice = Product::max('price') ?? 1000;
     return response()->json($suggestions);
 }
 
-    public function adminIndex(Request $request)
+public function adminIndex(Request $request)
     {
-        \Log::info('ProductController::adminIndex accessed', [
-            'user' => Auth::check() ? Auth::user()->email : 'guest',
-            'is_admin' => Auth::check() ? Auth::user()->is_admin : 'not logged in',
-        ]);
-
-        $products = Product::query();
+        $products = Product::with('category');
 
         if ($request->has('sort')) {
             if ($request->sort === 'price_asc') {
@@ -130,9 +125,11 @@ $maxPrice = Product::max('price') ?? 1000;
         }
 
         $products = $products->paginate(10);
+        $products->appends($request->query());
 
         return view('admin.products.index', compact('products'));
-    }
+}
+
 
     /**
      * Показать страницу конкретного продукта.
@@ -147,7 +144,7 @@ $maxPrice = Product::max('price') ?? 1000;
      */
     public function create()
     {
-        $categories = Category::with('subcategories')->get();
+        $categories = Category::all();
         return view('admin.products.create', compact('categories'));
     }
 
@@ -161,31 +158,21 @@ $maxPrice = Product::max('price') ?? 1000;
         'price' => 'required|numeric|min:0',
         'rating' => 'required|integer|min:1|max:5',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'subcategory_id' => 'required|exists:subcategories,id',
-    ]);
+        'category_id' => 'required|exists:categories,id',
 
-    $product = Product::create([
-        'description'=> 'sadasda',
-        'category_id' => 1,
-        'stock'=>10,
-        'name' => $request->name,
-        'price' => $request->price,
-        'rating' => $request->rating,
-        'subcategory_id' => $request->subcategory_id,
-    ]);
-
-    // Если есть изображение, сохраняем его в таблице product_images
-    if ($request->hasFile('image')) {
-        $imageContent = base64_encode(file_get_contents($request->file('image')->getRealPath()));
-        $mimeType = $request->file('image')->getClientMimeType();
-
-        ProductImageController::create([
-            'product_id' => $product->id,
-            'image_data' => $imageContent,
-            'mime_type' => $mimeType,
-            'is_primary' => true, // Первое изображение становится основным
         ]);
-    }
+
+    if ($request->hasFile('image')) {
+            $imageContent = base64_encode(file_get_contents($request->file('image')->getRealPath()));
+            $mimeType = $request->file('image')->getClientMimeType();
+
+            ProductImageController::create([
+                'product_id' => $product->id,
+                'image_data' => $imageContent,
+                'mime_type' => $mimeType,
+                'is_primary' => true, // Первое изображение становится основным
+            ]);
+        }
 
     return redirect()->route('products.index')->with('success', 'Product created successfully.');
      }
@@ -193,7 +180,7 @@ $maxPrice = Product::max('price') ?? 1000;
      */
     public function edit(Product $product)
     {
-        $categories = Category::with('subcategories')->get();
+        $categories = Category::all();
         return view('admin.products.edit', compact('product', 'categories'));
     }
 
@@ -203,20 +190,19 @@ $maxPrice = Product::max('price') ?? 1000;
      public function update(Request $request, Product $product)
 {
     $request->validate([
-        'name' => 'required|string|max:255',
-        'price' => 'required|numeric|min:0',
-        'rating' => 'required|integer|min:1|max:5',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'subcategory_id' => 'required|exists:subcategories,id',
-    ]);
-
-    $product->update([
-        'name' => $request->name,
-        'price' => $request->price,
-        'rating' => $request->rating,
-        'subcategory_id' => $request->subcategory_id,
-    ]);
-
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'rating' => 'required|integer|min:1|max:5',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+     $product->update([
+            'name' => $request->name,
+            'price' => $request->price,
+            'rating' => $request->rating,
+            'category_id' => $request->category_id,
+     ]);
+    
     // Если загружено новое изображение, добавляем его в таблицу product_images
     if ($request->hasFile('image')) {
         $imageContent = base64_encode(file_get_contents($request->file('image')->getRealPath()));
@@ -233,10 +219,6 @@ $maxPrice = Product::max('price') ?? 1000;
         ]);
     }
 
-    \Log::info('Product updated', [
-        'product_id' => $product->id,
-        'name' => $product->name,
-    ]);
 
     return redirect()->route('products.index')->with('success', 'Product updated successfully.');
      }
