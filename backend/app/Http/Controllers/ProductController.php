@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductImage;  
 use App\Models\Category;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
@@ -170,8 +171,7 @@ public function adminIndex(Request $request)
     if ($request->hasFile('image')) {
         $imageContent = base64_encode(file_get_contents($request->file('image')->getRealPath()));
         $mimeType = $request->file('image')->getClientMimeType();
-
-        ProductImage::create([
+        \App\Models\ProductImage::create([
             'product_id' => $product->id,
             'image_data' => $imageContent,
             'mime_type' => $mimeType,
