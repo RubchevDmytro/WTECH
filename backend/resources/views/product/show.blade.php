@@ -30,9 +30,9 @@
             <div class="product-info">
                 <h3>{{ $product->name }}</h3>
                 <p class="rating">{{ str_repeat('⭐', $product->rating) . str_repeat('☆', 5 - $product->rating) }}</p>
-                <p><strong>Description:</strong> {{ $product->description ?? 'No description available.' }}</p>
-                <p><strong>Stock:</strong> {{ $product->stock ?? 0 }}</p>
-                <p><strong>Category:</strong> {{ $product->category ? $product->category->name : 'N/A' }}</p>
+                <p><strong>Opis:</strong> {{ $product->description ?? 'No description available.' }}</p>
+                <p><strong>Sklad:</strong> {{ $product->stock ?? 0 }}</p>
+                <p><strong>Kategoria:</strong> {{ $product->category ? $product->category->name : 'N/A' }}</p>
             </div>
 
             <!-- Действия с продуктом -->
@@ -45,12 +45,12 @@
                         <input type="number" name="quantity" value="1" min="1" class="quantity">
                         <button type="button" onclick="this.previousElementSibling.stepUp()">+</button>
                     </div>
-                    <button type="submit" class="add-to-cart-btn">Add To Cart</button>
+                    <button type="submit" class="add-to-cart-btn">Prídať do košíka</button>
                 </form>
             </div>
         </div>
 
-        <a href="{{ route('main_page') }}" class="back-link">Back to Products</a>
+        <a href="{{ route('main_page') }}" class="back-link">Späť na produkty</a>
     </section>
 @endsection
 
