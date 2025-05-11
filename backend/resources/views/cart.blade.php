@@ -108,7 +108,7 @@
         <button class="search-btn">🔍</button>
         @auth
             <div>
-                Logged in as: {{ Auth::user()->email }} (is_admin: {{ Auth::user()->is_admin ? 'true' : 'false' }})
+                {{ Auth::user()->name }}
             </div>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
                 @csrf

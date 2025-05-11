@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -34,9 +33,14 @@ $minPrice = Product::min('price') ?? 0;
 $maxPrice = Product::max('price') ?? 1000;
     $products = Product::query();
 
+//    if ($request->has('category')) {
+//        $products->whereHas('category', function ($q) use ($request) {
+//            $q->where('slug', $request->query('category'));
+//        });
+//    }
     if ($request->has('category')) {
-        $products->whereHas('subcategory', function ($q) use ($request) {
-            $q->where('slug', $request->query('category'));
+        $products->whereHas('category', function ($q) use ($request) {
+            $q->where('name', $request->query('category'));
         });
     }
 
@@ -202,7 +206,7 @@ public function adminIndex(Request $request)
             'rating' => $request->rating,
             'category_id' => $request->category_id,
      ]);
-    
+
     // Если загружено новое изображение, добавляем его в таблицу product_images
     if ($request->hasFile('image')) {
         $imageContent = base64_encode(file_get_contents($request->file('image')->getRealPath()));
@@ -222,8 +226,8 @@ public function adminIndex(Request $request)
 
     return redirect()->route('products.index')->with('success', 'Product updated successfully.');
      }
-    
-    
+
+
     /**
          * Удалить продукт из базы данных.
      */

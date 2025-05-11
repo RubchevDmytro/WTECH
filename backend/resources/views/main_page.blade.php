@@ -40,20 +40,8 @@
         <ul class="category-list">
             @if(isset($categories) && $categories->isNotEmpty())
                 @foreach($categories as $category)
-                    {{--                    <li>--}}
-                    {{--                        <strong>{{ $category->name }}</strong>--}}
-                    {{--                        <ul>--}}
-                    {{--                            @foreach($category->subcategories as $subcategory)--}}
-                    {{--                                <li>--}}
-                    {{--                                    <a href="{{ route('main_page', ['category' => $subcategory->slug]) }}">--}}
-                    {{--                                        {{ $subcategory->name }}--}}
-                    {{--                                    </a>--}}
-                    {{--                                </li>--}}
-                    {{--                            @endforeach--}}
-                    {{--                        </ul>--}}
-                    {{--                    </li>--}}
                     <li>
-                        <a href="{{ route('main_page', ['category' => $category->slug]) }}">
+                        <a href="{{ route('main_page', ['category' => $category->name]) }}">
                             {{ $category->name }}
                         </a>
                     </li>
