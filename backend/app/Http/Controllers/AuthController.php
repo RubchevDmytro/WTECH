@@ -19,7 +19,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'gender' => 'required|in:male,female', // Убедитесь, что это правило есть
+            'gender' => 'required|in:male,female',
             'password' => 'required|string|min:8|confirmed',
         ], [
             'email.unique' => 'This email is already registered.',
@@ -35,7 +35,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'gender' => $request->gender,
             'password' => Hash::make($request->password),
-            'is_admin' => false, // Новые пользователи — не админы
+            'is_admin' => false,
         ]);
 
         Auth::login($user);
@@ -70,8 +70,6 @@ public function login(Request $request)
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-
-            // Перенаправляем в админ-меню только если пользователь — админ
         if ( Auth::user()->is_admin) {
              return redirect('/admin/admin_menu');
         }

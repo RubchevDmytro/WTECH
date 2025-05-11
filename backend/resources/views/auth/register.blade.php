@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
+    <title>Registracia</title>
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <style>
         body {
@@ -100,17 +100,17 @@
     </header>
 
     <div class="container">
-        <div class="title">Registration</div>
+        <div class="title">Registracia</div>
         <form method="POST" action="{{ route('register') }}">
             @csrf
             <div class="form-group">
-                <input type="text" id="name" name="name" placeholder="Name" value="{{ old('name') }}" required>
+                <input type="text" id="name" name="name" placeholder="Meno" value="{{ old('name') }}" required>
                 @error('name')
                     <div class="error">{{ $message }}</div>
                 @enderror
             </div>
             <div class="form-group">
-                <input type="text" id="surname" name="surname" placeholder="Surname" value="{{ old('surname') }}" required>
+                <input type="text" id="surname" name="surname" placeholder="Priezvisko" value="{{ old('surname') }}" required>
                 @error('surname')
                     <div class="error">{{ $message }}</div>
                 @enderror
@@ -123,25 +123,25 @@
             </div>
             <div class="form-group">
     <select id="gender" name="gender" required>
-        <option value="" disabled selected>Select Gender</option>
-        <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
-        <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
+        <option value="" disabled selected>Vyberte Pohlavie</option>
+        <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Muž</option>
+        <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Žena</option>
     </select>
     @error('gender')
         <div class="error">{{ $message }}</div>
     @enderror
 </div>
 <div class="form-group">
-                <input type="password" id="password" name="password" placeholder="Password" required>
+                <input type="password" id="password" name="password" placeholder="Heslo" required>
                 @error('password')
                     <div class="error">{{ $message }}</div>
                 @enderror
             </div>
             <div class="form-group">
-                <input type="password" id="confirm-password" name="password_confirmation" placeholder="Confirm Password" required>
+                <input type="password" id="confirm-password" name="password_confirmation" placeholder="Podtvrdte Heslo" required>
             </div>
-            <button type="submit" class="submit-btn">Create Account</button>
+            <button type="submit" class="submit-btn">Vytvoriť účet</button>
         </form>
-    <p>Have an account? <a href="{{ route('login') }}">Log in</a></p></div>
+    <p>Máš účet? <a href="{{ route('login') }}">Prihlasiť sa</a></p></div>
 </body>
 </html>
