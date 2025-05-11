@@ -188,14 +188,7 @@
                 <p class="rating">{{ str_repeat('⭐', $product->rating) . str_repeat('☆', 5 - $product->rating) }}</p>
                 <p><strong>Description:</strong> {{ $product->description ?? 'No description available.' }}</p>
                 <p><strong>Stock:</strong> {{ $product->stock ?? 0 }}</p>
-                <p>
-{{--                    <strong>Category:</strong> {{ $product->subcategory ? ($product->subcategory->category ? $product->subcategory->category->name : 'N/A') : 'N/A' }}--}}
-                    <strong>Category:</strong> {{ $product->subcategory ? ($product->subcategory->category ? $product->subcategory->category->name : 'N/A') : 'N/A' }}
-                </p>
-                <p>
-{{--                    <strong>Subcategory:</strong> {{ $product->subcategory ? $product->subcategory->name : 'N/A' }}--}}
-                    <strong>Subcategory:</strong> {{ $product->category ? $product->category->name : 'N/A' }}
-                </p>
+                <p><strong>Category:</strong> {{ $product->category ? $product->category->name : 'N/A' }}</p>
             </div>
             <!-- Действия с продуктом -->
             <div class="product-actions">
@@ -210,9 +203,6 @@
                         </div>
                         <button type="submit" class="add-to-cart-btn">Add To Cart</button>
                     </form>
-{{--                @else--}}
-{{--                    <p>Please <a href="{{ route('login.form') }}">log in</a> to add this product to your cart.</p>--}}
-{{--                @endauth--}}
             </div>
         </div>
 

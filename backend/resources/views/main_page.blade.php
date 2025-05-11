@@ -13,7 +13,8 @@
         <a href="{{ route('main_page') }}" class="logo">🏠</a>
         <form method="GET" action="{{ route('main_page') }}" class="search-form">
             <div class="autocomplete-wrapper">
-                <input type="text" placeholder="Search..." name="search" id="search-input" value="{{ request()->query('search') }}" autocomplete="off">
+                <input type="text" placeholder="Search..." name="search" id="search-input"
+                       value="{{ request()->query('search') }}" autocomplete="off">
                 <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
             </div>
             <button type="submit" class="search-btn">🔍</button>
@@ -39,17 +40,22 @@
         <ul class="category-list">
             @if(isset($categories) && $categories->isNotEmpty())
                 @foreach($categories as $category)
+                    {{--                    <li>--}}
+                    {{--                        <strong>{{ $category->name }}</strong>--}}
+                    {{--                        <ul>--}}
+                    {{--                            @foreach($category->subcategories as $subcategory)--}}
+                    {{--                                <li>--}}
+                    {{--                                    <a href="{{ route('main_page', ['category' => $subcategory->slug]) }}">--}}
+                    {{--                                        {{ $subcategory->name }}--}}
+                    {{--                                    </a>--}}
+                    {{--                                </li>--}}
+                    {{--                            @endforeach--}}
+                    {{--                        </ul>--}}
+                    {{--                    </li>--}}
                     <li>
-                        <strong>{{ $category->name }}</strong>
-                        <ul>
-                            @foreach($category->subcategories as $subcategory)
-                                <li>
-                                    <a href="{{ route('main_page', ['category' => $subcategory->slug]) }}">
-                                        {{ $subcategory->name }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
+                        <a href="{{ route('main_page', ['category' => $category->slug]) }}">
+                            {{ $category->name }}
+                        </a>
                     </li>
                 @endforeach
             @else
@@ -66,21 +72,30 @@
             <div class="error">{{ session('error') }}</div>
         @endif
 
-         <div class="filter-bar">
+        <div class="filter-bar">
             <form method="GET" action="{{ route('main_page') }}">
                 <label>Filtrovať podľa:</label>
                 <select name="sort">
-                    <option value="price_asc" {{ request()->query('sort') == 'price_asc' ? 'selected' : '' }}>Rastúca cena</option>
-                    <option value="price_desc" {{ request()->query('sort') == 'price_desc' ? 'selected' : '' }}>Klesajúca cena</option>
-                    <option value="rating" {{ request()->query('sort') == 'rating' ? 'selected' : '' }}>Hodnotenie</option>
+                    <option value="price_asc" {{ request()->query('sort') == 'price_asc' ? 'selected' : '' }}>Rastúca
+                        cena
+                    </option>
+                    <option value="price_desc" {{ request()->query('sort') == 'price_desc' ? 'selected' : '' }}>
+                        Klesajúca cena
+                    </option>
+                    <option value="rating" {{ request()->query('sort') == 'rating' ? 'selected' : '' }}>Hodnotenie
+                    </option>
                 </select>
                 <label>Cena:</label>
                 <div class="slider-container" data-min="{{ $minPrice }}" data-max="{{ $maxPrice }}">
                     <div class="inputs">
                         <span>from</span>
-                        <input type="text" id="min-price" name="min_price" value="{{ number_format((float) str_replace(',', '.', request()->query('min_price', $minPrice)), 2, ',', '') }}" data-min="{{ $minPrice }}" data-max="{{ $maxPrice }}">
+                        <input type="text" id="min-price" name="min_price"
+                               value="{{ number_format((float) str_replace(',', '.', request()->query('min_price', $minPrice)), 2, ',', '') }}"
+                               data-min="{{ $minPrice }}" data-max="{{ $maxPrice }}">
                         <span>to</span>
-                        <input type="text" id="max-price" name="max_price" value="{{ number_format((float) str_replace(',', '.', request()->query('max_price', $maxPrice)), 2, ',', '') }}" data-min="{{ $minPrice }}" data-max="{{ $maxPrice }}">
+                        <input type="text" id="max-price" name="max_price"
+                               value="{{ number_format((float) str_replace(',', '.', request()->query('max_price', $maxPrice)), 2, ',', '') }}"
+                               data-min="{{ $minPrice }}" data-max="{{ $maxPrice }}">
                     </div>
                     <div class="slider-wrapper">
                         <div class="slider" id="slider">
@@ -94,15 +109,17 @@
 
             </form>
         </div>
-            <div class = "title">
+        <div class="title">
             <h2>Zoznam produktov</h2>
-            </div>
+        </div>
         <div class="product-list">
             @forelse($products as $product)
                 <div class="product">
                     <a href="{{ route('product.show', $product->id) }}">
                         @if($product->primary_image)
-                            <img src="data:{{ $product->primary_image->mime_type }};base64,{{ $product->primary_image->image_data }}" alt="{{ $product->name }}">
+                            <img
+                                src="data:{{ $product->primary_image->mime_type }};base64,{{ $product->primary_image->image_data }}"
+                                alt="{{ $product->name }}">
                         @endif
                     </a>
                     <h3>{{ $product->name }}</h3>
