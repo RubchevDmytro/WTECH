@@ -28,11 +28,10 @@ body {
 
 /* Хэдер */
 header {
+    margin-top: 10px;
     height: 60px;
-    display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #a52a2a;
     width: 100%;
     position: fixed;
     z-index: 999;
@@ -476,6 +475,12 @@ footer {
         height: 50px;
     }
 
+        main{
+        margin-top: 150px;
+
+
+    }
+
     .menu-icon, .logo, .login, .cart-btn {
         font-size: 18px;
         margin: 0 5px;
@@ -571,7 +576,11 @@ footer {
         display: flex;
         flex-direction: column;
     }
+    main{
+        margin-top: 150px;
 
+    
+    }
     header.top-bar {
         flex-direction: column;
         display: flex;

@@ -15,7 +15,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #a52a2a;
+            background: #2c3e50;
             padding: 10px;
             color: white;
             position: relative;

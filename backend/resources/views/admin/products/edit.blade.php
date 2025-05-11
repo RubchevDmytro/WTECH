@@ -44,8 +44,12 @@
                 <input type="number" name="price" id="price" step="0.01" value="{{ old('price', $product->price) }}" required>
             </div>
             <div class="form-group">
-                <label for="rating">Rating (1-5):</label>
-                <input type="number" name="rating" id="rating" min="1" max="5" value="{{ old('rating', $product->rating) }}" required>
+                <label for="description">Description:</label>
+                <textarea name="description" id="description" rows="5" required>{{ old('description', $product->description) }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="stock">Stock Left:</label>
+                <input type="number" name="stock" id="stock" min="0" value="{{ old('stock', $product->stock) }}" required>
             </div>
             <div class="form-group">
                 <label for="category_id">Category:</label>
