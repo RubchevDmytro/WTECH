@@ -56,6 +56,21 @@
             text-align: center;
             min-width: 100px;
         }
+        .logout {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+.logo {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.logout:hover {
+    text-decoration: underline;
+}
         .admin-popup a {
             text-decoration: none;
             color: black;
@@ -79,19 +94,13 @@
 <body>
     <header>
         <div class="top-bar">
-            <div class="menu-icon">☰</div>
-            <a href="{{ route('main_page') }}" class="logo">🏠</a>
-            <input type="text" placeholder="Search...">
-            <button class="search-btn">🔍</button>
-
-            <div class="admin-container" onclick="togglePopup(event)">
-                <span>Admin ▼</span>
-                <div class="admin-popup">
-                    <a href="{{ route('logout') }}">Log out</a>
-                </div>
-            </div>
-
-            <a href="{{ route('cart') }}" class="cart-btn">🛒</a>
+            <a href="{{ route('admin.menu') }}" class="logo">Admin Panel</a>
+            <a href="{{ route('logout') }}" class="logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                {{ Auth::user()->email }} (Log Out)
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
         </div>
     </header>
 
