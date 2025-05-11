@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Prihlasenie</title>
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <style>
         header {
@@ -95,7 +95,7 @@
     <img src="{{ asset('images/logo.png') }}" alt="Logo" class="logo-image"></header>
 
     <div class="container">
-        <div class="title">Log In</div>
+        <div class="title">Prihlasenie</div>
         <form method="POST" action="{{ route('login') }}">
             @csrf
             <div class="form-group">
@@ -105,15 +105,15 @@
                 @enderror
             </div>
             <div class="form-group">
-                <input type="password" id="password" name="password" placeholder="Password" required>
+                <input type="password" id="password" name="password" placeholder="Heslo" required>
                 @error('password')
                     <div class="error">{{ $message }}</div>
                 @enderror
             </div>
-            <button type="submit" class="submit-btn">Submit</button>
+            <button type="submit" class="submit-btn">Prihlasiť sa</button>
         </form>
 
-        <p>Have no account? <a href="{{ route('register.form') }}">Register</a></p>
+        <p>Nemáš účet? <a href="{{ route('register.form') }}">Registracia</a></p>
     </div>
 </body>
 </html>

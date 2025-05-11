@@ -45,7 +45,6 @@
     <div class="title">Admin Panel</div>
     <button class="button" onclick="location.href='{{
     route('main_page')}}'">Product Katalog</button>
-    <button class="button" onclick="location.href='{{ route('categories.index') }}'">Manage Categories</button>
     <button class="button" onclick="location.href='{{ route('products.create') }}'">Create New Product</button>
     <button class="button" onclick="location.href='{{ route('products.index') }}'">Manage Products</button>
 </div>
