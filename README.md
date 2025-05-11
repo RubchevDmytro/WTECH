@@ -39,27 +39,37 @@ Access to the PostgreSQL database server (host, port, database name, username, p
 Installation
 
 Clone the repository:
+```
 git clone https://github.com/RubchevDmytro/WTECH.git
 cd WTECH/backend
+```
 
 
 Install PHP dependencies:
+```
 composer install
+```
 
 
 Install JavaScript dependencies:
+```
 npm install
+```
 
 
 Compile frontend assets:
+```
 npm run dev
+```
 
 
 
 Running the Project
 
 Start the Laravel development server:
+```
 php artisan serve
+```
 
 
 By default, the app will be available at http://localhost:8000.
