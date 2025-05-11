@@ -4,29 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $product->name }}</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main_page.css') }}">
 </head>
 <body>
 <header>
-    <div class="top-bar">
-        <div class="menu-icon">☰</div>
-        <a href="{{ route('main_page') }}" class="logo">🏠</a>
-        <form method="GET" action="{{ route('main_page') }}" class="search-form">
-            <input type="text" placeholder="Search..." name="search" value="{{ request()->query('search') }}">
-            <button type="submit" class="search-btn">🔍</button>
-        </form>
-        @auth
-            <div>
-                Logged in as: {{ Auth::user()->email }} (is_admin: {{ Auth::user()->is_admin ? 'true' : 'false' }})
+    <div class="navbar-wrapper">
+        <nav class="navbar">
+            <div class="logo">
+                <a href="{{ route('main_page') }}" class="logo-link">🏠</a>
             </div>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
-                @csrf
-                <button type="submit" class="login">Log Out</button>
-            </form>
-        @else
-            <a href="{{ route('login.form') }}" class="login">Log In</a>
-        @endauth
-        <a href="{{ route('cart') }}" class="cart-btn">🛒</a>
+            <div class="search-form">
+                <form method="GET" action="{{ route('main_page') }}" class="search-form">
+                    <div class="autocomplete-wrapper">
+                        <input type="text" placeholder="Search..." name="search" value="{{ request()->query('search') }}" autocomplete="off">
+                        <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
+                    </div>
+                    <button type="submit" class="search-btn">🔍</button>
+                </form>
+            </div>
+            <div class="nav-right">
+                @auth
+                    <span class="user-name">Logged in as: {{ Auth::user()->email }} (is_admin: {{ Auth::user()->is_admin ? 'true' : 'false' }})</span>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="nav-item logout-btn">Log Out</button>
+                    </form>
+                @else
+                    <a href="{{ route('login.form') }}" class="nav-item">Log In</a>
+                @endauth
+                <a href="{{ route('cart') }}" class="cart-link">🛒</a>
+            </div>
+        </nav>
     </div>
 </header>
 
@@ -49,8 +58,7 @@
                 <p>{{ str_repeat('⭐', $product->rating) . str_repeat('☆', 5 - $product->rating) }}</p>
                 <p>{{ $product->price }} €</p>
                 <p>Stock: {{ $product->stock ?? 0 }}</p>
-                <p>Category: {{ $product->subcategory ? ($product->subcategory->category ? $product->subcategory->category->name : 'N/A') : 'N/A' }}</p>
-                <p>Subcategory: {{ $product->subcategory ? $product->subcategory->name : 'N/A' }}</p>
+                <p>Category: {{ $product->category ? $product->category->name : 'N/A' }}</p>
                 @auth
                     <form action="{{ route('cart.add', $product->id) }}" method="POST">
                         @csrf

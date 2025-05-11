@@ -1,0 +1,245 @@
+/* Внешний контейнер навигационной панели */
+.navbar-wrapper {
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    overflow: visible; /* Обрезаем все, что выходит за границы */
+}
+
+/* Навигационная панель */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #a52a2a; /* Основной красный цвет из main_page.css */
+    padding: 10px 20px;
+    border-radius: 25px; /* Скругление углов */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Легкая тень для эффекта */
+    margin: 0 10px; /* Добавляем отступы от краев экрана */
+    max-width: calc(100% - 20px); /* Уменьшаем ширину, чтобы края не касались экрана */
+    flex-direction: column; /* По умолчанию вертикальный макет для адаптивности */
+}
+
+/* Эффект наведения */
+.navbar:hover {
+    background: #8b0000; /* Темный красный при наведении */
+}
+
+/* Логотип и левая часть */
+.logo-link {
+    color: white;
+    font-size: 24px; /* Размер иконки логотипа */
+    text-decoration: none;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+/* Контейнер для правых элементов (Odhlásiť sa, Košík) */
+.nav-right {
+    display: flex;
+    align-items: center;
+    margin-right: 20px; /* Отступ справа внутри панели */
+}
+
+/* Ссылки и элементы навигации */
+.nav-item {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    margin: 0 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.nav-item.active, .nav-item:hover {
+    color: white;
+    background: #800000; /* Цвет фона при наведении */
+    border-radius: 5px;
+}
+
+/* Кнопка выхода */
+.logout-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px 10px;
+    margin: 0 10px;
+}
+
+.logout-btn:hover {
+    color: white;
+    background: #a00000;
+    border-radius: 5px;
+}
+
+/* Корзина (Košík) */
+.cart-link {
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+    margin: 0 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.cart-link:hover {
+    color: white;
+    background: #800000;
+    border-radius: 5px;
+}
+
+/* Форма поиска */
+.search-form {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 10px 0; /* Отступ сверху и снизу для отделения */
+    width: 100%; /* Растягиваем форму на всю ширину */
+}
+
+/* Контейнер автозаполнения */
+.autocomplete-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    width: 100%; /* Убеждаемся, что контейнер занимает всю ширину */
+}
+
+/* Поле ввода */
+.search-form input {
+    flex: 1; /* Растягиваем на всю доступную ширину */
+    padding: 5px;
+    margin: 0 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    width: 100%; /* Убедимся, что поле растягивается */
+}
+
+/* Кнопка поиска */
+.search-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+/* Стили для автозаполнения */
+.autocomplete-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
+
+.suggestion-item.selected {
+    background-color: #a52a2a;
+    color: white;
+}
+.autocomplete-suggestions {
+    position: absolute;
+    top: 100%; /* Появление сразу под полем ввода */
+    left: 0;
+    width: 100%; /* Ширина совпадает с полем ввода */
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Высокий z-index для отображения поверх других элементов */
+    max-height: 200px; /* Ограничение высоты с прокруткой */
+    overflow-y: auto; /* Прокрутка, если много подсказок */
+    display: none; /* Показывается по условию в JS */
+}
+
+.autocomplete-suggestions .suggestion-item {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.autocomplete-suggestions .suggestion-item:hover,
+.autocomplete-suggestions .suggestion-item.selected {
+    background-color: #f0f0f0;
+}
+/* Имя пользователя */
+.user-name {
+    color: white;
+    font-size: 20px;
+    margin: 0 10px;
+}
+
+/* Ссылки в админ-панели */
+.admin-links {
+    margin-top: 80px; /* Учитываем высоту навигации с отступом */
+    padding: 20px;
+}
+
+.admin-item {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    background: #ccc;
+    text-decoration: none;
+    color: #333;
+    border-radius: 5px;
+}
+
+.admin-item.active, .admin-item:hover {
+    background: #a52a2a;
+    color: white;
+}
+
+/* Медиа-запросы для адаптивности */
+@media (min-width: 850px) {
+    .navbar {
+        flex-direction: row; /* Вертикальный макет переключается на горизонтальный */
+        padding: 10px 20px;
+    }
+
+    .search-form {
+        margin: 0; /* Убираем отступы сверху/снизу на больших экранах */
+        width: auto; /* Возвращаем автоматическую ширину */
+    }
+
+    .autocomplete-wrapper {
+        width: auto; /* Убеждаемся, что контейнер адаптируется */
+    }
+
+    .search-form input {
+        max-width: 300px; /* Ограничиваем ширину на больших экранах для эстетики */
+    }
+}
+
+/* Отступ для контента под навигацией */
+main {
+    margin-top: 100px; /* Увеличиваем отступ для учета высоты навигации с формой ниже */
+}

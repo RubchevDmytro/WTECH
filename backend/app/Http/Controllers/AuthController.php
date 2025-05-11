@@ -49,8 +49,10 @@ class AuthController extends Controller
     }
 public function logout(Request $request)
 {
-    \Log::info('User logged out', ['email' => Auth::user()->email]);
-
+        if (Auth::check()) {
+            \Log::info('User logged out', ['email' => Auth::user()->email]);
+            Auth::logout();
+        }
     Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();

@@ -16,11 +16,6 @@ class ProductController extends Controller
      */
 public function index(Request $request)
 {
-    \Log::info('ProductController::index accessed', [
-        'user' => Auth::check() ? Auth::user()->email : 'guest',
-        'is_admin' => Auth::check() ? Auth::user()->is_admin : 'not logged in',
-    ]);
-
         try {
             $categories = Category::all();
         } catch (\Exception $e) {
@@ -34,11 +29,10 @@ $minPrice = Product::min('price') ?? 0;
 $maxPrice = Product::max('price') ?? 1000;
     $products = Product::query();
 
-    if ($request->has('category')) {
-        $products->whereHas('subcategory', function ($q) use ($request) {
-            $q->where('slug', $request->query('category'));
-        });
-    }
+if ($request->has('category')) {
+            $categoryId = $request->query('category');
+            $products->where('category_id', $categoryId);
+}
 
     // Обрабатываем min_price и max_price с запятой
     $minPriceInput = $request->has('min_price') ? str_replace(',', '.', $request->min_price) : $minPrice;
@@ -151,31 +145,43 @@ public function adminIndex(Request $request)
     /**
      * Сохранить новый продукт в базе данных.
      */
-     public function store(Request $request)
+    public function store(Request $request)
 {
     $request->validate([
         'name' => 'required|string|max:255',
         'price' => 'required|numeric|min:0',
         'rating' => 'required|integer|min:1|max:5',
+        'description' => 'required|string',
+        'stock' => 'required|integer|min:0',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         'category_id' => 'required|exists:categories,id',
+    ]);
 
-        ]);
+    $product = Product::create([
+        'description' => $request->description,
+        'category_id' => $request->category_id,
+        'stock' => $request->stock,
+        'name' => $request->name,
+        'price' => $request->price,
+        'rating' => $request->rating,
+    ]);
 
+    // Если есть изображение, сохраняем его в таблицу product_images
     if ($request->hasFile('image')) {
-            $imageContent = base64_encode(file_get_contents($request->file('image')->getRealPath()));
-            $mimeType = $request->file('image')->getClientMimeType();
+        $imageContent = base64_encode(file_get_contents($request->file('image')->getRealPath()));
+        $mimeType = $request->file('image')->getClientMimeType();
 
-            ProductImageController::create([
-                'product_id' => $product->id,
-                'image_data' => $imageContent,
-                'mime_type' => $mimeType,
-                'is_primary' => true, // Первое изображение становится основным
-            ]);
-        }
+        ProductImage::create([
+            'product_id' => $product->id,
+            'image_data' => $imageContent,
+            'mime_type' => $mimeType,
+            'is_primary' => true,
+        ]);
+    }
 
     return redirect()->route('products.index')->with('success', 'Product created successfully.');
-     }
+    }
+    
     /* Показать форму для редактирования продукта.
      */
     public function edit(Product $product)
@@ -189,21 +195,25 @@ public function adminIndex(Request $request)
      */
      public function update(Request $request, Product $product)
 {
-    $request->validate([
+     $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
-            'rating' => 'required|integer|min:1|max:5',
+            'description' => 'required|string',
+            'stock' => 'required|integer|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'category_id' => 'required|exists:categories,id',
-        ]);
+     ]);
+
+
      $product->update([
             'name' => $request->name,
             'price' => $request->price,
-            'rating' => $request->rating,
+            'description' => $request->description,
+            'stock' => $request->stock,
             'category_id' => $request->category_id,
-     ]);
-    
-    // Если загружено новое изображение, добавляем его в таблицу product_images
+     ]); 
+
+     // Если загружено новое изображение, добавляем его в таблицу product_images
     if ($request->hasFile('image')) {
         $imageContent = base64_encode(file_get_contents($request->file('image')->getRealPath()));
         $mimeType = $request->file('image')->getClientMimeType();

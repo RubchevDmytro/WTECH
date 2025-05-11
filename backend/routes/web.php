@@ -22,7 +22,7 @@
  //temperary
 Route::get('/product/upload-image', [ProductImageController::class, 'showUploadForm'])->name('product.upload_image');
 Route::post('/product/upload-image', [ProductImageController::class, 'uploadImage'])->name('product.upload_image.store');
- 
+Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update'); 
 Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
  
 Route::get('/order/confirm', [OrderController::class, 'confirm'])->name('order.confirm');
