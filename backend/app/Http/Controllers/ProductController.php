@@ -147,39 +147,52 @@ public function adminIndex(Request $request)
      * Сохранить новый продукт в базе данных.
      */
     public function store(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'price' => 'required|numeric|min:0',
-        'rating' => 'required|integer|min:1|max:5',
-        'description' => 'required|string',
-        'stock' => 'required|integer|min:0',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'category_id' => 'required|exists:categories,id',
-    ]);
-
-    $product = Product::create([
-        'description' => $request->description,
-        'category_id' => $request->category_id,
-        'stock' => $request->stock,
-        'name' => $request->name,
-        'price' => $request->price,
-        'rating' => $request->rating,
-    ]);
-
-    // Если есть изображение, сохраняем его в таблицу product_images
-    if ($request->hasFile('image')) {
-        $imageContent = base64_encode(file_get_contents($request->file('image')->getRealPath()));
-        $mimeType = $request->file('image')->getClientMimeType();
-        \App\Models\ProductImage::create([
-            'product_id' => $product->id,
-            'image_data' => $imageContent,
-            'mime_type' => $mimeType,
-            'is_primary' => true,
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'rating' => 'required|integer|min:1|max:5',
+            'description' => 'required|string',
+            'stock' => 'required|integer|min:0',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'category_id' => 'required|exists:categories,id',
         ]);
-    }
 
-    return redirect()->route('products.index')->with('success', 'Product created successfully.');
+        $product = Product::create([
+            'description' => $request->description,
+            'category_id' => $request->category_id,
+            'stock' => $request->stock,
+            'name' => $request->name,
+            'price' => $request->price,
+            'rating' => $request->rating,
+        ]);
+
+        // Обработка нескольких изображений
+        if ($request->hasFile('images')) {
+            $isPrimarySet = false;
+            foreach ($request->file('images') as $index => $image) {
+                $imageContent = base64_encode(file_get_contents($image->getRealPath()));
+                $mimeType = $image->getClientMimeType();
+                $isPrimary = $request->input("is_primary_{$index}", false) && !$isPrimarySet;
+
+                if ($isPrimary) {
+                    $isPrimarySet = true;
+                    ProductImage::where('product_id', $product->id)->update(['is_primary' => false]);
+                }
+
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'image_data' => $imageContent,
+                    'mime_type' => $mimeType,
+                    'is_primary' => $isPrimary,
+                ]);
+
+                // Простая индикация прогресса (текстовый вывод)
+            }
+        }
+
+        return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
     
     /* Показать форму для редактирования продукта.
@@ -193,47 +206,68 @@ public function adminIndex(Request $request)
     /**
      * Обновить продукт в базе данных.
      */
-     public function update(Request $request, Product $product)
-{
-     $request->validate([
+   public function update(Request $request, Product $product)
+    {
+        $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'description' => 'required|string',
             'stock' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'category_id' => 'required|exists:categories,id',
-     ]);
+        ]);
 
-
-     $product->update([
+        $product->update([
             'name' => $request->name,
             'price' => $request->price,
             'description' => $request->description,
             'stock' => $request->stock,
             'category_id' => $request->category_id,
-     ]); 
-
-     // Если загружено новое изображение, добавляем его в таблицу product_images
-    if ($request->hasFile('image')) {
-        $imageContent = base64_encode(file_get_contents($request->file('image')->getRealPath()));
-        $mimeType = $request->file('image')->getClientMimeType();
-
-        // Делаем новое изображение основным, сбрасываем флаг у старых
-        $product->images()->update(['is_primary' => false]);
-
-        ProductImage::create([
-            'product_id' => $product->id,
-            'image_data' => $imageContent,
-            'mime_type' => $mimeType,
-            'is_primary' => true,
         ]);
-    }
 
+        // Получаем все данные чекбоксов is_primary
+        $isPrimaryData = $request->input('is_primary', []);
 
-    return redirect()->route('products.index')->with('success', 'Product updated successfully.');
-     }
-    
-    
+        // Обновляем is_primary для существующих изображений
+        $existingImages = $product->images;
+        foreach ($existingImages as $image) {
+            $isPrimary = isset($isPrimaryData[$image->id]) && $isPrimaryData[$image->id] == '1';
+            $image->update(['is_primary' => $isPrimary]);
+        }
+
+        // Если есть новые изображения, добавляем их
+        if ($request->hasFile('images')) {
+            $isPrimarySet = $existingImages->contains('is_primary', true);
+            foreach ($request->file('images') as $index => $image) {
+                if (!$image) continue; // Пропускаем пустые файлы
+
+                $imageContent = base64_encode(file_get_contents($image->getRealPath()));
+                $mimeType = $image->getClientMimeType();
+                $isPrimary = isset($isPrimaryData[$index]) && $isPrimaryData[$index] == '1' && !$isPrimarySet;
+
+                if ($isPrimary) {
+                    $isPrimarySet = true;
+                    $product->images()->update(['is_primary' => false]);
+                }
+
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'image_data' => $imageContent,
+                    'mime_type' => $mimeType,
+                    'is_primary' => $isPrimary,
+                ]);
+            }
+        }
+
+        // Убедимся, что хотя бы одно изображение помечено как primary
+        if (!$product->images()->where('is_primary', true)->exists() && $product->images()->count() > 0) {
+            $firstImage = $product->images()->first();
+            $firstImage->update(['is_primary' => true]);
+        }
+
+        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+    } 
     /**
          * Удалить продукт из базы данных.
      */
